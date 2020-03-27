@@ -1,5 +1,5 @@
 # PyQt5 modules
-from PyQt5.QtWidgets import QWidget, QDialog
+from PyQt5.QtWidgets import QWidget, QDialog, QComboBox
 from PyQt5.Qt import pyqtSlot
 
 # Python modules
@@ -95,12 +95,26 @@ class   Ventana_Entrada(QWidget, Ui_Dialog):
     def __init__(self):
         super(Ventana_Entrada, self).__init__()        # Llamamos al constructor de los padres
         self.setupUi(self)
-        self.pushButton_ok.clicked.connect(self.getItem)
+        self.comboBox_senial.currentIndexChanged.connect(self.cambie_de_eleccion)
+
+    def cambie_de_eleccion(self):
+        print("hola")
+        senial_elegida = self.comboBox_senial.currentText()
+        if senial_elegida == "Cuadratica":
+            self.lineEdit_frecuencia.setDisabled(False)
+        else:
+            self.lineEdit_frecuencia.setDisabled(True)
+
+    def on_currentIndexChanged(ix):
+        print("currentIndex:", ix)
 
     def getItem(self):
         senial_elegida = self.comboBox_senial.currentText()
         amplitud = self.lineEdit_amplitud.text()
+        #if senial_elegida!="Senoidal":
+        #    self.lineEdit_frecuencia.setReadOnly(False)
         frecuencia = self.lineEdit_frecuencia.text()
+        print(amplitud)
         self.close()
 
 
