@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Señal de Entrada</string>
   </property>
   <widget class="QLabel" name="titulo">
    <property name="geometry">
@@ -76,20 +76,20 @@
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_senoidal_2">
+  <widget class="QCheckBox" name="checkBox_instantaneo">
    <property name="geometry">
     <rect>
      <x>40</x>
      <y>430</y>
-     <width>81</width>
+     <width>101</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>Tiempo </string>
+    <string>Instantaneo</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_senoidal_3">
+  <widget class="QCheckBox" name="checkBox_natural">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -99,10 +99,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Senoidal</string>
+    <string>Natural</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="comboBox_senial">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -126,6 +126,19 @@
      <string>3/2 Senoidal</string>
     </property>
    </item>
+  </widget>
+  <widget class="QPushButton" name="pushButton_ok">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>550</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Ok</string>
+   </property>
   </widget>
   <widget class="QWidget" name="">
    <property name="geometry">

@@ -1,5 +1,5 @@
 # PyQt5 modules
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QDialog
 from PyQt5.Qt import pyqtSlot
 
 # Python modules
@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 # Project Modules
 from src.ui.matematica_ui import Ui_Form
 from src.ui.grafiquitos_ui import *
+from src.ui.entrada_ui import *
 
 # Python Modules
 from numpy import *
@@ -37,6 +38,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.llave3.pressed.connect(self.cambia_llave_3)  # seteamos el calback para cada vez que apreten la checkBox
         self.llave4.pressed.connect(self.cambia_llave_4)  # seteamos el calback para cada vez que apreten la checkBox
         self.pushButton_1.clicked.connect(self.mat_1)
+        self.pushButton_input.clicked.connect(self.input)
 
 
     def cambia_llave_1(self):
@@ -78,6 +80,26 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.widget = MatplotlibWidget()  #todo por que aca tiene que ser self y sin self se cerraba???
         self.widget.show()
 
+    def input(self):
+        self.ventana_entrada = Ventana_Entrada()  # todo por que aca tiene que ser self y sin self se cerraba???
+        self.ventana_entrada.show()
+
+
+
+
+class   Ventana_Entrada(QWidget, Ui_Dialog):
+    """ Creamos nuestra clase Ventana_Entrada, heredo de QWidget porque asi lo defino en QtDesigner,
+        y luego heredo la forma compilada que tenemos en la carpeta /ui
+    """
+
+    def __init__(self):
+        super(Ventana_Entrada, self).__init__()        # Llamamos al constructor de los padres
+        self.setupUi(self)
+        self.pushButton_ok.clicked.connect(self.getItem)
+
+    def getItem(self):
+        item = self.comboBox_senial.currentText()
+        print(item)
 
 
 class   MatplotlibWidget(QWidget, Ui_Form):
