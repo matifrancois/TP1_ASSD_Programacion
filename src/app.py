@@ -38,8 +38,19 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.llave3.pressed.connect(self.cambia_llave_3)  # seteamos el calback para cada vez que apreten la checkBox
         self.llave4.pressed.connect(self.cambia_llave_4)  # seteamos el calback para cada vez que apreten la checkBox
         self.pushButton_1.clicked.connect(self.mat_1)
+        self.pushButton_1.clicked.connect(self.mat_1)
         self.pushButton_input.clicked.connect(self.input)
+        #self.muestreo_natural_activado() #esto es para cuando el muestreo natural se haya activado
 
+    """def muestreo_natural_activado(self):
+        global x
+        x=x
+        self.llave2.setChecked(False)
+        self.llave2.setEnabled(False)
+        self.llave3.setChecked(False)
+        self.llave3.setEnabled(False)
+        self.muestra_fondo()
+    """
 
     def cambia_llave_1(self):
         global x
@@ -81,8 +92,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.widget.show()
 
     def input(self):
-        self.ventana_entrada = Ventana_Entrada()  # todo por que aca tiene que ser self y sin self se cerraba???
-        self.ventana_entrada.show()
+            self.ventana_entrada = Ventana_Entrada()  # todo por que aca tiene que ser self y sin self se cerraba???
+            self.ventana_entrada.mostrar()
 
 
 
@@ -96,27 +107,40 @@ class   Ventana_Entrada(QWidget, Ui_Dialog):
         super(Ventana_Entrada, self).__init__()        # Llamamos al constructor de los padres
         self.setupUi(self)
         self.comboBox_senial.currentIndexChanged.connect(self.cambie_de_eleccion)
+        self.comboBox_tipo_muestreo.currentIndexChanged.connect(self.cambie_de_eleccion_2)
+        self.pushButton_ok.clicked.connect(self.getItem)
+        self.frecuencia=0
+        self.analisis = dateando()
 
     def cambie_de_eleccion(self):
-        print("hola")
-        senial_elegida = self.comboBox_senial.currentText()
-        if senial_elegida == "Cuadratica":
+        self.senial_elegida = self.comboBox_senial.currentText()
+        if self.senial_elegida == "Cuadratica":
             self.lineEdit_frecuencia.setDisabled(True)
         else:
             self.lineEdit_frecuencia.setDisabled(False)
 
-    def on_currentIndexChanged(ix):
-        print("currentIndex:", ix)
+    def cambie_de_eleccion_2(self):
+        self.muestreo_elegido = self.comboBox_tipo_muestreo.currentText()
+        if self.muestreo_elegido == "Muestreo Instantaneo":
+            self.lineEdit_tao.setDisabled(True)
+        else:
+            self.lineEdit_tao.setDisabled(False)
 
     def getItem(self):
-        senial_elegida = self.comboBox_senial.currentText()
-        amplitud = self.lineEdit_amplitud.text()
-        #if senial_elegida!="Senoidal":
-        #    self.lineEdit_frecuencia.setReadOnly(False)
-        frecuencia = self.lineEdit_frecuencia.text()
-        print(amplitud)
+        self.senial_elegida = self.comboBox_senial.currentText()
+        self.amplitud = self.lineEdit_amplitud.text()
+        self.frecuencia = self.lineEdit_frecuencia.text()
+        self.muestreo_elegido = self.comboBox_tipo_muestreo.currentText()
+        self.tao = self.lineEdit_tao.text()
+        self.tiempo = self.lineEdit_t.text()
+        self.analisis.frecuencia_text = self.frecuencia
+        self.analisis.amplitud_text = self.amplitud
+        self.analisis.senial= self.senial_elegida
+        self.analisis.mostrar_dato()
         self.close()
 
+    def mostrar(self):
+        self.show()
 
 
 class   MatplotlibWidget(QWidget, Ui_Form):
@@ -126,8 +150,8 @@ class   MatplotlibWidget(QWidget, Ui_Form):
 
     def __init__(self):
         super(MatplotlibWidget, self).__init__()        # Llamamos al constructor de los padres
-        self.setupUi(self)                              # Necesitamos usar esto para hacer el build de los componentes
-        seed(time())                                    # Random seed para generacion aleatoria
+        self.setupUi(self)
+
 
         # Tenemos que utilizar el backend que provee Matplotlib para PyQt y crear un FigureCanvas,
         # son las entidades encargadas de proveer el soporte grafico necesario para dibujar en pantalla
@@ -138,7 +162,7 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
         self.figure2 = Figure()
-        self.canvas2 = FigureCanvas(self.figure)
+        self.canvas2 = FigureCanvas(self.figure2)
 
         # A partir de aca es lo mismo que con pyplot, solo que el manejo no es automatico, sino
         # que lo hace uno con criterio, entonces creamos un par de ejes
@@ -161,20 +185,23 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         """ Slot/Callback usado para actualizar datos en el Axes """
 
         # Creamos un puntos para el eje x y para el eje y!
-        x_axis = linspace(0, 2 * pi, num=1000)
-        y_axis = sin(x_axis )
+        x_axis = linspace(0, 4 * pi, num=1000)
+        y_axis = sin( 2*x_axis )
+        x_axis2 = linspace(0, 4 * pi, num=1000)
+        y_axis2 = sin(4 * x_axis)
+
 
         #plt.plot(x_axis,y_axis)
         #plt.show()
 
         # Limpiamos el axes, agregamos los puntos, y actualizamos el canvas
         # IMPORTANTE! Te invito a comentar para que veas la importancia del .clear() y .draw()
-        self.axes.clear()
+        #self.axes.clear()
         self.axes.plot(x_axis, y_axis)
         self.canvas.draw()
 
-        self.axes2.clear()
-        self.axes2.plot(x_axis, y_axis)
+        #self.axes2.clear()
+        self.axes2.plot(x_axis2, y_axis2)
         self.canvas2.draw()
 
 #TODO organizar las 4 funciones para que queden en una y sacar la variable global de ahi creandola en def init para luego pasarla por referencia a la funcion antes dicha
@@ -182,3 +209,26 @@ class   MatplotlibWidget(QWidget, Ui_Form):
 #TODO falta que se pueda calcular la transformada rapida de fourier con fft
 #TODO falta hacerlo como lo hizo pablo y no lucas
 
+class   dateando():
+    """ Creamos nuestra clase MatplotlibWidget, heredo de QWidget porque asi lo defino en QtDesigner,
+        y luego heredo la forma compilada que tenemos en la carpeta /ui
+    """
+
+    def __init__(self):
+        super(dateando, self).__init__()        # Llamamos al constructor de los padres
+        #self.setupUi(self)# Necesitamos usar esto para hacer el build de los componentes
+        self.senial = ""
+        self.frecuencia_text = ""
+        self.amplitud_text = ""
+        self.frecuencia =0
+
+
+
+    def mostrar_dato(self):
+        print(self.senial)
+        print(self.amplitud_text)
+        if self.frecuencia_text.isdigit():
+            self.frecuencia = float(self.frecuencia_text) +20
+            print(self.frecuencia)
+        else:
+            print("frecuencia invalida")
