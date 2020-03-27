@@ -101,9 +101,9 @@ class   Ventana_Entrada(QWidget, Ui_Dialog):
         print("hola")
         senial_elegida = self.comboBox_senial.currentText()
         if senial_elegida == "Cuadratica":
-            self.lineEdit_frecuencia.setDisabled(False)
-        else:
             self.lineEdit_frecuencia.setDisabled(True)
+        else:
+            self.lineEdit_frecuencia.setDisabled(False)
 
     def on_currentIndexChanged(ix):
         print("currentIndex:", ix)
