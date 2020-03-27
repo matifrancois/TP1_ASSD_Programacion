@@ -153,7 +153,7 @@
     <item row="0" column="0">
      <widget class="QLabel" name="label_amplitud">
       <property name="text">
-       <string>Amplitud</string>
+       <string>Amplitud (V)</string>
       </property>
      </widget>
     </item>
@@ -163,7 +163,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="label_frecuencia">
       <property name="text">
-       <string>Frecuencia</string>
+       <string>Frecuencia (Hz)</string>
       </property>
      </widget>
     </item>

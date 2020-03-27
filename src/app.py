@@ -98,8 +98,11 @@ class   Ventana_Entrada(QWidget, Ui_Dialog):
         self.pushButton_ok.clicked.connect(self.getItem)
 
     def getItem(self):
-        item = self.comboBox_senial.currentText()
-        print(item)
+        senial_elegida = self.comboBox_senial.currentText()
+        amplitud = self.lineEdit_amplitud.text()
+        frecuencia = self.lineEdit_frecuencia.text()
+        self.close()
+
 
 
 class   MatplotlibWidget(QWidget, Ui_Form):

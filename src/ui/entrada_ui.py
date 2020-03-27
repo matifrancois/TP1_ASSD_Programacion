@@ -82,6 +82,6 @@ class Ui_Dialog(object):
         self.comboBox_senial.setItemText(1, _translate("Dialog", "Cuadratica"))
         self.comboBox_senial.setItemText(2, _translate("Dialog", "3/2 Senoidal"))
         self.pushButton_ok.setText(_translate("Dialog", "Ok"))
-        self.label_amplitud.setText(_translate("Dialog", "Amplitud"))
-        self.label_frecuencia.setText(_translate("Dialog", "Frecuencia"))
+        self.label_amplitud.setText(_translate("Dialog", "Amplitud (V)"))
+        self.label_frecuencia.setText(_translate("Dialog", "Frecuencia (Hz)"))
 
