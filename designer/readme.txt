@@ -1,1 +1,0 @@
-Designer es la carpeta para los archivos *.ui obtenidos del QtDesigner.

@@ -1,1 +1,0 @@
-Resources es la carpeta para los archivos *.qrc o recursos contenidos de Qt obtenidos del QtDesigner.
