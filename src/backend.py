@@ -1,3 +1,5 @@
+from numpy import *
+
 class Backend:
     """ Creamos nuestra clase MatplotlibWidget, heredo de QWidget porque asi lo defino en QtDesigner,
         y luego heredo la forma compilada que tenemos en la carpeta /ui
@@ -11,6 +13,10 @@ class Backend:
         self.llaves = 0
         self.T = 0.0
         self.tau = 0.0
+        self.x_s = []
+        self.y_s = []
+        self.x_f = []
+        self.y_f = []
 
     def set_input(self, diccionario):
         self.senial = diccionario['senial_elegida']
@@ -36,3 +42,10 @@ class Backend:
 
     def mostrar_dato(self):
         print(self.senial)
+
+    def devuelvo(self, nodo, senial_a_graficar):
+        self.x_s = linspace(0, 4 * pi, num=1000)
+        self.y_s = self.amplitud*sin(self.frecuencia * self.x_s)
+        self.x_f = linspace(0, 1 * pi, num=1000)
+        self.y_f = sin(6 * self.x_f)
+        return self.x_s, self.y_s, self.x_f, self.y_f

@@ -172,6 +172,34 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QComboBox" name="comboBox_senial_a_graficar">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>291</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>...</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_senial_a_graficar">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>320</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Señal a graficar</string>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>llave3</zorder>
    <zorder>llave2</zorder>
@@ -183,6 +211,8 @@
    <zorder>pushButton_4</zorder>
    <zorder>pushButton_input</zorder>
    <zorder>titulo</zorder>
+   <zorder>comboBox_senial_a_graficar</zorder>
+   <zorder>label_senial_a_graficar</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

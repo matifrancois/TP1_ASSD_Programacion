@@ -52,10 +52,19 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         ###########################################################################
 
         self.grid = QGridLayout()
-        self.grid.addWidget(self.toolbar,2,0)
-        self.grid.addWidget(self.canvas,1,0)  # Se le agrega el canvas al widget
-        self.grid.addWidget(self.toolbar2,4,0)
-        self.grid.addWidget(self.canvas2,3,0)  # Se le agrega el canvas al widget
+        self.grid.addWidget(self.titulo, 1, 0)
+        self.grid.addWidget(self.sub_titulo_1, 2, 0)
+        self.grid.addWidget(self.plotter_container, 3, 0)  # Se le agrega el canvas al widget
+        self.grid.addWidget(self.toolbar, 4, 0)
+        self.grid.addWidget(self.sub_titulo_2, 5, 0)
+        self.grid.addWidget(self.plotter_container2, 6, 0)  # Se le agrega el canvas al widget
+        self.grid.addWidget(self.toolbar2, 7, 0)
+        self.grid.addWidget(self.label_auxiliar, 8, 0)
+        self.grid.addWidget(self.label_auxiliar2, 9, 0)
+
+        #self.grid.addWidget(self.pushButton_borrar, 5, 0)  # Se le agrega el canvas al widget
+        #self.grid.addWidget(self.boton_cerrar, 5, 1)  # Se le agrega el canvas al widget
+
 
         self.setLayout(self.grid)
 
@@ -77,34 +86,12 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         #self.on_plot_update()
 
     @pyqtSlot()
-    def on_plot_update(self, nodo):
+    def on_plot_update(self, nodo, senial_a_graficar, backend):
         """ Slot/Callback usado para actualizar datos en el Axes """
 
-        """
-        Esta parte es donde irian los llamados a los difentes metodos del backend (uno por cada nodo posible para elegir)
-        """
 
-        # Creamos un puntos para el eje x y para el eje y!
-        if nodo == 1:
-            x_axis = linspace(0, 4 * pi, num=1000)
-            y_axis = sin(6 * x_axis)
-            x_axis2 = linspace(0, 4 * pi, num=1000)
-            y_axis2 = sin(4 * x_axis)
-        elif nodo == 2:
-            x_axis = linspace(0, 4 * pi, num=1000)
-            y_axis = sin( 2*x_axis )
-            x_axis2 = linspace(0, 4 * pi, num=1000)
-            y_axis2 = sin(4 * x_axis)
-        elif nodo == 3:
-            x_axis = linspace(0, 4 * pi, num=1000)
-            y_axis = sin(5 * x_axis)
-            x_axis2 = linspace(0, 4 * pi, num=1000)
-            y_axis2 = sin(4 * x_axis)
-        else:
-            x_axis = linspace(0, 4 * pi, num=1000)
-            y_axis = sin(9 * x_axis)
-            x_axis2 = linspace(0, 4 * pi, num=1000)
-            y_axis2 = sin(4 * x_axis)
+        # buscamos los datos del backend, 2 refiere al de la frecuencia!
+        self.x_axis, self.y_axis, self.x_axis2, self.y_axis2 = self.llamando_backend(nodo, senial_a_graficar, backend)
 
 
         # Limpiamos el axes, agregamos los puntos, y actualizamos el canvas
@@ -115,18 +102,21 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         self.axes2.set_xlabel("frecuencia [Hz]")
         self.axes2.set_ylabel("FFT")
 
+
+
         #self.axes.clear()
-        self.axes.plot(x_axis, y_axis, label="Señal")
+        self.axes.plot(self.x_axis, self.y_axis, label="Señal")
+        self.axes2.plot(self.x_axis2, self.y_axis2, label="Señal2")
+        # para mostrar la leyenda TODO (esto estaria bueno para ponerle que nodo es
+        self.legend = self.figure.legend()
+        self. legend2 = self.figure2.legend()
         self.canvas.draw()
         #self.axes2.clear()
-        self.axes2.plot(x_axis2, y_axis2, label="Señal2")
         self.canvas2.draw()
         # Configuramos los ejes para que tengan un label
 
 
-        # para mostrar la leyenda TODO (esto estaria bueno para ponerle que nodo es
-        self.figure.legend()
-        self.figure2.legend()
+
 
     def cerrar(self):
         self.borrar()
@@ -134,7 +124,13 @@ class   MatplotlibWidget(QWidget, Ui_Form):
 
     # ver por que no se borran los legend
     def borrar(self):
+        #self.legend.remove()
+        #self.legend2.remove()
         self.axes.clear()
         self.axes2.clear()
         self.canvas.draw()
         self.canvas2.draw()
+
+
+    def llamando_backend(self, nodo, senial_a_graficar, backend):
+        return backend.devuelvo(nodo, senial_a_graficar)

@@ -106,10 +106,51 @@
      <height>28</height>
     </rect>
    </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="text">
     <string>Borrar</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_auxiliar">
+   <property name="geometry">
+    <rect>
+     <x>24</x>
+     <y>620</y>
+     <width>461</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_auxiliar2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>580</y>
+     <width>481</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>label_auxiliar</zorder>
+  <zorder>titulo</zorder>
+  <zorder>sub_titulo_1</zorder>
+  <zorder>sub_titulo_2</zorder>
+  <zorder>boton_cerrar</zorder>
+  <zorder>plotter_container</zorder>
+  <zorder>plotter_container2</zorder>
+  <zorder>pushButton_borrar</zorder>
+  <zorder>label_auxiliar2</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -27,10 +27,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.llave2.pressed.connect(lambda: self.cambia(100, not self.llave2.isChecked()))  # seteamos el callback para cada que presione la checkBox
         self.llave3.pressed.connect(lambda: self.cambia(10, not self.llave3.isChecked()))  # seteamos el callback para cada que presionen la checkBox
         self.llave4.pressed.connect(lambda: self.cambia(1, not self.llave4.isChecked()))  # seteamos el callback para cada que presionen la checkBox
-        self.pushButton_1.clicked.connect(lambda: self.graficando(1))
-        self.pushButton_2.clicked.connect(lambda: self.graficando(2))
-        self.pushButton_3.clicked.connect(lambda: self.graficando(3))
-        self.pushButton_4.clicked.connect(lambda: self.graficando(4))
+        self.pushButton_1.clicked.connect(lambda: self.graficando(1, self.backend))
+        self.pushButton_2.clicked.connect(lambda: self.graficando(2, self.backend))
+        self.pushButton_3.clicked.connect(lambda: self.graficando(3, self.backend))
+        self.pushButton_4.clicked.connect(lambda: self.graficando(4, self.backend))
         self.pushButton_input.clicked.connect(self.input)
         self.objetoEntrada = Ventana_Entrada()
         self.widgetGrafico = MatplotlibWidget()
@@ -56,14 +56,14 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """
         self.label.setPixmap(QtGui.QPixmap('assets\\fotos_fondo\\tp1_assd' + str(int(self.x)) + '.jpg'))
 
-    def graficando(self, nodo):
+    def graficando(self, nodo, backend):
         """
         Esta funcion muestra el widget
         :return:
         """
         self.widgetGrafico.move(1400, 80)
         self.widgetGrafico.show()
-        self.widgetGrafico.on_plot_update(nodo)
+        self.widgetGrafico.on_plot_update(nodo, self.comboBox_senial_a_graficar.currentText(), backend)
 
     def input(self):
         """
@@ -81,7 +81,11 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     'llaves': self.x,
                                     'tau': self.objetoEntrada.tau,
                                     'T': self.objetoEntrada.T})
-            self.backend.mostrar_dato()
+            self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.senial_elegida +
+                                                    " A:" + self.objetoEntrada.amplitud +
+                                                    " f:" + self.objetoEntrada.frecuencia +
+                                                    " tau" + self.objetoEntrada.tau +
+                                                    " t" + self.objetoEntrada.T)
 
     def seteando_fichas(self):
         if self.x % 10 == 1:

@@ -4,13 +4,13 @@
 
 # Escenciales
 
-# falta ver que el backend se actualize al tildar diferentes checkboxs (destruccion del objeto (¿quiza?))
-# falta ver que la toolbar quede bien posicionada respecto de los graficos
+# falta ver que los legend se borren al salir de la pestaña (o borrar)
 # falta terminar de comentar all
 
 # Mediano Plazo
 
 # ver el tema de los labels, ponerles nombres segun nodo y evitar el problema que tienen (al ponerle el 2do no lo toma)
+# y resolver el error que tira al inicio
 
 
 

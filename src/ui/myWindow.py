@@ -59,6 +59,13 @@ class Ui_MainWindow(object):
         self.titulo.setFont(font)
         self.titulo.setAlignment(QtCore.Qt.AlignCenter)
         self.titulo.setObjectName("titulo")
+        self.comboBox_senial_a_graficar = QtWidgets.QComboBox(self.centralwidget)
+        self.comboBox_senial_a_graficar.setGeometry(QtCore.QRect(10, 350, 291, 22))
+        self.comboBox_senial_a_graficar.setObjectName("comboBox_senial_a_graficar")
+        self.comboBox_senial_a_graficar.addItem("")
+        self.label_senial_a_graficar = QtWidgets.QLabel(self.centralwidget)
+        self.label_senial_a_graficar.setGeometry(QtCore.QRect(10, 320, 101, 16))
+        self.label_senial_a_graficar.setObjectName("label_senial_a_graficar")
         self.label.raise_()
         self.llave3.raise_()
         self.llave2.raise_()
@@ -70,6 +77,8 @@ class Ui_MainWindow(object):
         self.pushButton_4.raise_()
         self.pushButton_input.raise_()
         self.titulo.raise_()
+        self.comboBox_senial_a_graficar.raise_()
+        self.label_senial_a_graficar.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 26))
@@ -91,14 +100,6 @@ class Ui_MainWindow(object):
         self.pushButton_1.setText(_translate("MainWindow", "Plot"))
         self.pushButton_input.setText(_translate("MainWindow", "Input"))
         self.titulo.setText(_translate("MainWindow", "Simulador de Circuitos"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+        self.comboBox_senial_a_graficar.setItemText(0, _translate("MainWindow", "..."))
+        self.label_senial_a_graficar.setText(_translate("MainWindow", "Señal a graficar"))
 
