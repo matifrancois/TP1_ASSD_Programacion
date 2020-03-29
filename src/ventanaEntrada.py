@@ -1,5 +1,6 @@
 from src.ui.ventanaEntrada import Ui_Dialog
 from PyQt5.QtWidgets import QWidget, QDialog, QComboBox, QApplication
+from src.app import *
 import sys
 
 class Ventana_Entrada(QDialog, Ui_Dialog):
@@ -12,25 +13,76 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.setupUi(self)
         # solo utilizar la siguiente expresion si un parametro debe quedar inhabilitado al igual que cambia_de_elecccion
         # self.comboBox_senial.currentIndexChanged.connect(self.cambie_de_eleccion)
-        self.buttonBox.clicked.connect(self.getItem)
-        self.frecuencia = 0
+        self.frecuencia = ""
+        self.senial_elegida = ""
+        self.amplitud = ""
+        self.tau = ""
+        self.T = ""
+        self.muestreo_elegido = ""
+        self.almacenamiento = 0.0
+        self.x = 0
 
-    def getItem(self):
+    def getItem(self, x):
         self.senial_elegida = self.comboBox_senial.currentText()
         self.amplitud = self.lineEdit_amplitud.text()
         self.frecuencia = self.lineEdit_frecuencia.text()
-        #self.mandarinfo()
-        #app = QApplication(sys.argv)
-        #if app.exec() == QDialog.Accepted:         #TODO aqui ver como pasar los datos al backend como dijo lucas
-        #    print("hola")
-        #else:
-        #    print("chau")
+        self.tau = self.lineEdit_tao.text()
+        self.T = self.lineEdit_t.text()
+        self.muestreo_elegido = self.comboBox_tipo_muestreo.currentText()
+        if self.muestreo_elegido == "Natural":
+            return self.muestreo_natural(x)
+        elif self.muestreo_elegido == "Instantaneo":
+            return self.muestreo_instantaneo(x)
+        else:
+            return self.muestreo_independiente()
 
-    # def mandarinfo(self):
+    def muestreo_natural(self, x):
         """
-        Esta funcion se encarga de enviar la info obtenida al backend
+        se encarga de que se apaguen los checkbox no utilizados
         :return:
         """
+        self.x = x
+        print(self.x)
+        self.almacenamiento = 0.0
+        if self.x % 10 == 1:
+            self.almacenamiento -= 1.0
+        if (int((self.x/10)) % 10) == 1:
+            self.almacenamiento -= 10.0
+        if (int((self.x/100)) % 10) == 1:
+            self.almacenamiento -= 100.0
+        if (int((self.x/1000)) % 10) == 1:
+            self.almacenamiento -= 1000.0
+        print(self.almacenamiento)
+        return self.almacenamiento
+
+    def muestreo_instantaneo(self, x):
+        """
+        se encarga de que se apaguen los checkbox no utilizados
+        :return:
+        """
+        self.x = x
+        self.almacenamiento = 0.0
+        if self.x % 10 == 1:
+            self.almacenamiento -= 1.0
+        if (int((self.x / 10)) % 10) == 0:
+            self.almacenamiento += 10.0
+        if (int((self.x / 100)) % 10) == 0:
+            self.almacenamiento += 100.0
+        if (int((self.x / 1000)) % 10) == 1:
+            self.almacenamiento -= 1000.0
+        return self.almacenamiento
+
+    def muestreo_independiente(self):
+        """
+        se encarga de que se apaguen los checkbox no utilizados
+        :return:
+        """
+        return 0
+
+
+
+
+
 
 
     """def cambie_de_eleccion(self):

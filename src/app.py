@@ -4,7 +4,7 @@ import sys
 # Project Modules
 from src.ui.myWindow import *
 from src.myWindow import MyWindow
-from src.backend import backend
+from src.backend import Backend
 
 
 # Python Modules
@@ -13,8 +13,9 @@ from numpy import *
 
 def main():
     app = QtWidgets.QApplication([])
-    Backend = backend()
-    window = MyWindow(Backend)
+    backend = Backend()
+    window = MyWindow(backend)
+    window.move(400, 200)
     window.show()
     sys.exit(app.exec_())
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'grafiquitos.ui'
+# Form implementation generated from reading ui file 'myWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1000, 600)
+        MainWindow.resize(1000, 500)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.llave1 = QtWidgets.QCheckBox(self.centralwidget)
@@ -51,6 +51,14 @@ class Ui_MainWindow(object):
         self.pushButton_input = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_input.setGeometry(QtCore.QRect(10, 270, 93, 28))
         self.pushButton_input.setObjectName("pushButton_input")
+        self.titulo = QtWidgets.QLabel(self.centralwidget)
+        self.titulo.setGeometry(QtCore.QRect(270, 50, 451, 31))
+        font = QtGui.QFont()
+        font.setFamily("Segoe Print")
+        font.setPointSize(18)
+        self.titulo.setFont(font)
+        self.titulo.setAlignment(QtCore.Qt.AlignCenter)
+        self.titulo.setObjectName("titulo")
         self.label.raise_()
         self.llave3.raise_()
         self.llave2.raise_()
@@ -61,6 +69,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.raise_()
         self.pushButton_4.raise_()
         self.pushButton_input.raise_()
+        self.titulo.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 26))
@@ -81,4 +90,15 @@ class Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "Plot"))
         self.pushButton_1.setText(_translate("MainWindow", "Plot"))
         self.pushButton_input.setText(_translate("MainWindow", "Input"))
+        self.titulo.setText(_translate("MainWindow", "Simulador de Circuitos"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
 
