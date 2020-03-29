@@ -9,7 +9,7 @@
 
 # Mediano Plazo
 
-# ver el tema de los labels, ponerles nombres segun nodo y evitar el problema que tienen (al ponerle el 2do no lo toma)
+# ver el tema de los labels, ponerles nombres segun nodo
 # y resolver el error que tira al inicio
 
 
