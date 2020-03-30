@@ -60,7 +60,7 @@ class Ui_MainWindow(object):
         self.titulo.setAlignment(QtCore.Qt.AlignCenter)
         self.titulo.setObjectName("titulo")
         self.comboBox_senial_a_graficar = QtWidgets.QComboBox(self.centralwidget)
-        self.comboBox_senial_a_graficar.setGeometry(QtCore.QRect(10, 350, 291, 22))
+        self.comboBox_senial_a_graficar.setGeometry(QtCore.QRect(10, 350, 371, 22))
         self.comboBox_senial_a_graficar.setObjectName("comboBox_senial_a_graficar")
         self.comboBox_senial_a_graficar.addItem("")
         self.label_senial_a_graficar = QtWidgets.QLabel(self.centralwidget)

@@ -87,8 +87,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                     " A:" + self.objetoEntrada.amplitud +
                                                     " f:" + self.objetoEntrada.frecuencia +
                                                     " tau:" + self.objetoEntrada.tau +
-                                                    " t:" + self.objetoEntrada.T)
-
+                                                    " t:" + self.objetoEntrada.T +
+                                                    " Ri:" + self.objetoEntrada.inicio_rango +
+                                                    " Rf:" + self.objetoEntrada.fin_rango)
     def seteando_fichas(self):
         if self.x % 10 == 1:
             self.llave4.setChecked(True)

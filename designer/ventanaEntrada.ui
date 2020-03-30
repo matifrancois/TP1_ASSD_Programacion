@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>414</width>
+    <width>480</width>
     <height>599</height>
    </rect>
   </property>
@@ -226,6 +226,51 @@
      <string>Instantaneo</string>
     </property>
    </item>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>150</y>
+     <width>211</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_inicio_rango">
+      <property name="text">
+       <string>Inicio (s)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_inicio_rango"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_fin_rango">
+      <property name="text">
+       <string>Fin (s)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_fin_rango"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>130</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Rango</string>
+   </property>
   </widget>
  </widget>
  <resources/>

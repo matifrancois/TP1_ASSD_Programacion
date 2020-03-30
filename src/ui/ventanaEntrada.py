@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(414, 599)
+        Dialog.resize(480, 599)
         self.titulo = QtWidgets.QLabel(Dialog)
         self.titulo.setGeometry(QtCore.QRect(-20, 20, 451, 31))
         font = QtGui.QFont()
@@ -93,6 +93,27 @@ class Ui_Dialog(object):
         self.comboBox_tipo_muestreo.addItem("")
         self.comboBox_tipo_muestreo.addItem("")
         self.comboBox_tipo_muestreo.addItem("")
+        self.layoutWidget_2 = QtWidgets.QWidget(Dialog)
+        self.layoutWidget_2.setGeometry(QtCore.QRect(250, 150, 211, 91))
+        self.layoutWidget_2.setObjectName("layoutWidget_2")
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.layoutWidget_2)
+        self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.label_inicio_rango = QtWidgets.QLabel(self.layoutWidget_2)
+        self.label_inicio_rango.setObjectName("label_inicio_rango")
+        self.gridLayout_4.addWidget(self.label_inicio_rango, 0, 0, 1, 1)
+        self.lineEdit_inicio_rango = QtWidgets.QLineEdit(self.layoutWidget_2)
+        self.lineEdit_inicio_rango.setObjectName("lineEdit_inicio_rango")
+        self.gridLayout_4.addWidget(self.lineEdit_inicio_rango, 0, 1, 1, 1)
+        self.label_fin_rango = QtWidgets.QLabel(self.layoutWidget_2)
+        self.label_fin_rango.setObjectName("label_fin_rango")
+        self.gridLayout_4.addWidget(self.label_fin_rango, 1, 0, 1, 1)
+        self.lineEdit_fin_rango = QtWidgets.QLineEdit(self.layoutWidget_2)
+        self.lineEdit_fin_rango.setObjectName("lineEdit_fin_rango")
+        self.gridLayout_4.addWidget(self.lineEdit_fin_rango, 1, 1, 1, 1)
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setGeometry(QtCore.QRect(250, 130, 55, 16))
+        self.label.setObjectName("label")
 
         self.retranslateUi(Dialog)
         self.buttonBox.accepted.connect(Dialog.accept)
@@ -116,14 +137,7 @@ class Ui_Dialog(object):
         self.comboBox_tipo_muestreo.setItemText(0, _translate("Dialog", "..."))
         self.comboBox_tipo_muestreo.setItemText(1, _translate("Dialog", "Natural"))
         self.comboBox_tipo_muestreo.setItemText(2, _translate("Dialog", "Instantaneo"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())
+        self.label_inicio_rango.setText(_translate("Dialog", "Inicio (s)"))
+        self.label_fin_rango.setText(_translate("Dialog", "Fin (s)"))
+        self.label.setText(_translate("Dialog", "Rango"))
 

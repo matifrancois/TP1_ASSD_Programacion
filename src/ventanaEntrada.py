@@ -16,6 +16,8 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.frecuencia = ""
         self.senial_elegida = ""
         self.amplitud = ""
+        self.inicio_rango = ""
+        self.fin_rango = ""
         self.tau = ""
         self.T = ""
         self.muestreo_elegido = ""
@@ -29,6 +31,8 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.tau = self.lineEdit_tao.text()
         self.T = self.lineEdit_t.text()
         self.muestreo_elegido = self.comboBox_tipo_muestreo.currentText()
+        self.inicio_rango = self.lineEdit_inicio_rango.text()
+        self.fin_rango = self.lineEdit_fin_rango.text()
         if self.muestreo_elegido == "Natural":
             return self.muestreo_natural(x)
         elif self.muestreo_elegido == "Instantaneo":
