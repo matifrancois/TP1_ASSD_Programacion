@@ -18,6 +18,7 @@ class Backend:
         self.x_f = []
         self.y_f = []
 
+    """"
     def set_input(self, diccionario):
         self.senial = diccionario['senial_elegida']
         if diccionario['amplitud'].isdigit():
@@ -37,13 +38,14 @@ class Backend:
             self.T = float(diccionario['T'])
         else:
             self.T = 0
+    """
 
 
+    def devuelvo(self, nodo, senial_a_graficar, x):
+        """
+        aca es donde tendria que trabajar joaco con el backend
+        """
 
-    def mostrar_dato(self):
-        print(self.senial)
-
-    def devuelvo(self, nodo, senial_a_graficar):
         self.x_s = linspace(0, 4 * pi, num=1000)
         self.y_s = self.amplitud*sin(self.frecuencia * self.x_s)
         self.x_f = linspace(0, 1 * pi, num=1000)

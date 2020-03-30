@@ -141,7 +141,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>270</y>
+      <y>200</y>
       <width>93</width>
       <height>28</height>
      </rect>
@@ -200,6 +200,19 @@
      <string>Señal a graficar</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_0">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>280</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Plot</string>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>llave3</zorder>
    <zorder>llave2</zorder>
@@ -213,6 +226,7 @@
    <zorder>titulo</zorder>
    <zorder>comboBox_senial_a_graficar</zorder>
    <zorder>label_senial_a_graficar</zorder>
+   <zorder>pushButton_0</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

@@ -86,12 +86,12 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         #self.on_plot_update()
 
     @pyqtSlot()
-    def on_plot_update(self, nodo, senial_a_graficar, backend):
+    def on_plot_update(self, nodo, senial_a_graficar, backend, x):
         """ Slot/Callback usado para actualizar datos en el Axes """
 
 
         # buscamos los datos del backend, 2 refiere al de la frecuencia!
-        self.x_axis, self.y_axis, self.x_axis2, self.y_axis2 = self.llamando_backend(nodo, senial_a_graficar, backend)
+        self.x_axis, self.y_axis, self.x_axis2, self.y_axis2 = self.llamando_backend(nodo, senial_a_graficar, backend, x)
 
 
         # Limpiamos el axes, agregamos los puntos, y actualizamos el canvas
@@ -132,5 +132,5 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         self.canvas2.draw()
 
 
-    def llamando_backend(self, nodo, senial_a_graficar, backend):
-        return backend.devuelvo(nodo, senial_a_graficar)
+    def llamando_backend(self, nodo, senial_a_graficar, backend, x):
+        return backend.devuelvo(nodo, senial_a_graficar, x)
