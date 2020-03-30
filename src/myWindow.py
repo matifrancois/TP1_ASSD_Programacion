@@ -1,6 +1,6 @@
 from src.ui.myWindow import *
 from src.ui.ventanaEntrada import *
-from PyQt5.QtWidgets import QWidget, QDialog, QComboBox
+from PyQt5.QtWidgets import QWidget, QDialog, QComboBox, QMessageBox
 from src.ventanaEntrada import Ventana_Entrada
 from src.graficos import MatplotlibWidget
 from src.app import *
@@ -8,7 +8,7 @@ from src.app import *
 
 class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
-    def __init__(self,  backend, *args, **kwargs):
+    def __init__(self, backend, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         self.setupUi(self)
         """
@@ -21,12 +21,18 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """
         self.x = 0
         self.almacenamiento = 0
+        self.flag_check_input = 0
+        self.texto_check_input = ""
         self.backend = backend
         self.label.setPixmap(QtGui.QPixmap('assets\\fotos_fondo\\tp1_assd' + str(int(self.x)) + '.jpg'))
-        self.llave1.pressed.connect(lambda: self.cambia(1000, not self.llave1.isChecked()))  # seteamos el callback para cada que toquen la checkBox
-        self.llave2.pressed.connect(lambda: self.cambia(100, not self.llave2.isChecked()))  # seteamos el callback para cada que presione la checkBox
-        self.llave3.pressed.connect(lambda: self.cambia(10, not self.llave3.isChecked()))  # seteamos el callback para cada que presionen la checkBox
-        self.llave4.pressed.connect(lambda: self.cambia(1, not self.llave4.isChecked()))  # seteamos el callback para cada que presionen la checkBox
+        self.llave1.pressed.connect(lambda: self.cambia(1000,
+                                                        not self.llave1.isChecked()))  # seteamos el callback para cada que toquen la checkBox
+        self.llave2.pressed.connect(lambda: self.cambia(100,
+                                                        not self.llave2.isChecked()))  # seteamos el callback para cada que presione la checkBox
+        self.llave3.pressed.connect(lambda: self.cambia(10,
+                                                        not self.llave3.isChecked()))  # seteamos el callback para cada que presionen la checkBox
+        self.llave4.pressed.connect(lambda: self.cambia(1,
+                                                        not self.llave4.isChecked()))  # seteamos el callback para cada que presionen la checkBox
         self.pushButton_0.clicked.connect(lambda: self.graficando(0, self.backend))
         self.pushButton_1.clicked.connect(lambda: self.graficando(1, self.backend))
         self.pushButton_2.clicked.connect(lambda: self.graficando(2, self.backend))
@@ -76,20 +82,26 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.x += self.almacenamiento
             self.seteando_fichas()
             self.label.setPixmap(QtGui.QPixmap('assets\\fotos_fondo\\tp1_assd' + str(int(self.x)) + '.jpg'))
-            """self.backend.set_input({'senial_elegida': self.objetoEntrada.senial_elegida,
-                                    'amplitud': self.objetoEntrada.amplitud,
-                                    'frecuencia': self.objetoEntrada.frecuencia,
-                                    'llaves': self.x,
-                                    'tau': self.objetoEntrada.tau,
-                                    'T': self.objetoEntrada.T})
-            """
-            self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.senial_elegida +
-                                                    " A:" + self.objetoEntrada.amplitud +
-                                                    " f:" + self.objetoEntrada.frecuencia +
-                                                    " tau:" + self.objetoEntrada.tau +
-                                                    " t:" + self.objetoEntrada.T +
-                                                    " Ri:" + self.objetoEntrada.inicio_rango +
-                                                    " Rf:" + self.objetoEntrada.fin_rango)
+            self.flag_check_input, self.texto_check_input = self.backend.check_input(
+                                                            {'senial_elegida': self.objetoEntrada.senial_elegida,
+                                                            'amplitud': self.objetoEntrada.amplitud,
+                                                            'frecuencia': self.objetoEntrada.frecuencia,
+                                                            'Rango_inicial': self.objetoEntrada.inicio_rango,
+                                                            'Rango_final': self.objetoEntrada.fin_rango,
+                                                            'tau': self.objetoEntrada.tau,
+                                                            'T': self.objetoEntrada.T})
+
+            if self.flag_check_input != 0:
+                QMessageBox.warning(self, "Error", self.texto_check_input, QMessageBox.Discard)
+            else:
+                self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.senial_elegida +
+                                                        " A:" + self.objetoEntrada.amplitud +
+                                                        " f:" + self.objetoEntrada.frecuencia +
+                                                        " tau:" + self.objetoEntrada.tau +
+                                                        " t:" + self.objetoEntrada.T +
+                                                        " Ri:" + self.objetoEntrada.inicio_rango +
+                                                        " Rf:" + self.objetoEntrada.fin_rango)
+
     def seteando_fichas(self):
         if self.x % 10 == 1:
             self.llave4.setChecked(True)

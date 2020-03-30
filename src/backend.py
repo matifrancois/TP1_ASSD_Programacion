@@ -18,27 +18,17 @@ class Backend:
         self.x_f = []
         self.y_f = []
 
-    """"
-    def set_input(self, diccionario):
-        self.senial = diccionario['senial_elegida']
-        if diccionario['amplitud'].isdigit():
-            self.amplitud = float(diccionario['amplitud'])
+    def check_input(self, diccionario):
+        """
+        comprueba que los valores del diccionario tengan sentido sino devuelve un flag y el string con el comentario
+        indicando por que no tuvo sentido
+        :param diccionario:
+        :return: flag (0 all bien o -1 all mal), string
+        """
+        if diccionario["amplitud"].isdigit():
+            return 0, ""
         else:
-            self.amplitud = 0
-        if diccionario['frecuencia'].isdigit():
-            self.frecuencia = float(diccionario['frecuencia'])
-        else:
-            self.frecuencia = 0
-        self.llaves = diccionario['llaves']
-        if diccionario['tau'].isdigit():
-            self.tau = float(diccionario['tau'])
-        else:
-            self.tau = 0
-        if diccionario['T'].isdigit():
-            self.T = float(diccionario['T'])
-        else:
-            self.T = 0
-    """
+            return -1, "amplitud no es digito"
 
 
     def devuelvo(self, nodo, senial_a_graficar, x):
