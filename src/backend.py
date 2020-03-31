@@ -28,14 +28,13 @@ class Backend:
         if diccionario["amplitud"].isdigit():
             return 0, ""
         else:
-            return -1, "amplitud no es digito"
+            return -1, "Amplitud no es digito"
 
 
     def devuelvo(self, nodo, senial_a_graficar, x):
         """
         aca es donde tendria que trabajar joaco con el backend
         """
-
         self.x_s = linspace(0, 4 * pi, num=1000)
         self.y_s = self.amplitud*sin(self.frecuencia * self.x_s)
         self.x_f = linspace(0, 1 * pi, num=1000)
