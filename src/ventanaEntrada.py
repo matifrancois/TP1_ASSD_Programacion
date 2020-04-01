@@ -11,8 +11,7 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
     def __init__(self):
         super(QDialog, self).__init__()        # Llamamos al constructor de los padres
         self.setupUi(self)
-        # solo utilizar la siguiente expresion si un parametro debe quedar inhabilitado al igual que cambia_de_elecccion
-        # self.comboBox_senial.currentIndexChanged.connect(self.cambie_de_eleccion)
+        self.comboBox_senial.currentIndexChanged.connect(self.cambie_de_eleccion)
         self.frecuencia = ""
         self.senial_elegida = ""
         self.amplitud = ""
@@ -23,6 +22,12 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.muestreo_elegido = ""
         self.almacenamiento = 0.0
         self.x = 0
+        self.amplitud_am = ""
+        self.frecuencia_am = ""
+        self.coeficiente = ""
+        self.lineEdit_amplitud_moduladora.setDisabled(True)
+        self.lineEdit_frecuencia_moduladora.setDisabled(True)
+        self.lineEdit_coeficiente.setDisabled(True)
 
     def getItem(self, x):
         self.senial_elegida = self.comboBox_senial.currentText()
@@ -33,12 +38,16 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.muestreo_elegido = self.comboBox_tipo_muestreo.currentText()
         self.inicio_rango = self.lineEdit_inicio_rango.text()
         self.fin_rango = self.lineEdit_fin_rango.text()
+        self.amplitud_am = self.lineEdit_amplitud_moduladora.text()
+        self.frecuencia_am = self.lineEdit_frecuencia_moduladora.text()
+        self.coeficiente = self.lineEdit_coeficiente.text()
         if self.muestreo_elegido == "Natural":
             return self.muestreo_natural(x)
         elif self.muestreo_elegido == "Instantaneo":
             return self.muestreo_instantaneo(x)
         else:
             return self.muestreo_independiente()
+
 
     def muestreo_natural(self, x):
         """
@@ -85,18 +94,16 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
 
 
 
-
-
-
-
-    """def cambie_de_eleccion(self):
-            """"""
-            funcion que se encarga de inhabilitar la entrada de datos en las situaciones requeridas
-            :return: 
-            """"""
-            self.senial_elegida = self.comboBox_senial.currentText()
-            if self.senial_elegida == "Cuadratica":
-                self.lineEdit_frecuencia.setDisabled(True)
-            else:
-                self.lineEdit_frecuencia.setDisabled(False)
+    def cambie_de_eleccion(self):
         """
+        funcion que se encarga de inhabilitar la entrada de datos en las situaciones requeridas
+        :return:
+        """
+        if self.comboBox_senial.currentText() == "AM":
+            self.lineEdit_amplitud_moduladora.setDisabled(False)
+            self.lineEdit_frecuencia_moduladora.setDisabled(False)
+            self.lineEdit_coeficiente.setDisabled(False)
+        else:
+            self.lineEdit_amplitud_moduladora.setDisabled(True)
+            self.lineEdit_frecuencia_moduladora.setDisabled(True)
+            self.lineEdit_coeficiente.setDisabled(True)

@@ -82,7 +82,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.x += self.almacenamiento
             self.seteando_fichas()
             self.label.setPixmap(QtGui.QPixmap('assets\\fotos_fondo\\tp1_assd' + str(int(self.x)) + '.jpg'))
-            self.flag_check_input, self.texto_check_input = self.backend.check_input(
+            if self.objetoEntrada.senial_elegida == "AM":
+                self.flag_check_input, self.texto_check_input = self.backend.check_input(
                                                             {'senial_elegida': self.objetoEntrada.senial_elegida,
                                                             'amplitud': self.objetoEntrada.amplitud,
                                                             'frecuencia': self.objetoEntrada.frecuencia,
@@ -90,11 +91,34 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                             'Rango_final': self.objetoEntrada.fin_rango,
                                                             'tau': self.objetoEntrada.tau,
                                                             'T': self.objetoEntrada.T})
-
+            else:
+                self.flag_check_input, self.texto_check_input = self.backend.check_input(
+                                                            {'senial_elegida': self.objetoEntrada.senial_elegida,
+                                                             'amplitud': self.objetoEntrada.amplitud,
+                                                             'frecuencia': self.objetoEntrada.frecuencia,
+                                                             'Rango_inicial': self.objetoEntrada.inicio_rango,
+                                                             'Rango_final': self.objetoEntrada.fin_rango,
+                                                             'tau': self.objetoEntrada.tau,
+                                                             'T': self.objetoEntrada.T,
+                                                             'amplitud_am': self.objetoEntrada.amplitud_am,
+                                                             'frecuencia_am': self.objetoEntrada.frecuencia_am,
+                                                             'coeficiente': self.objetoEntrada.coeficiente})
             if self.flag_check_input != 0:
                 QMessageBox.warning(self, "Error", self.texto_check_input, QMessageBox.Discard)
             else:
-                self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.senial_elegida +
+                if self.objetoEntrada.senial_elegida == "AM":
+                    self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.senial_elegida +
+                                                            " A:" + self.objetoEntrada.amplitud +
+                                                            " f:" + self.objetoEntrada.frecuencia +
+                                                            " tau:" + self.objetoEntrada.tau +
+                                                            " t:" + self.objetoEntrada.T +
+                                                            " Ri:" + self.objetoEntrada.inicio_rango +
+                                                            " Rf:" + self.objetoEntrada.fin_rango +
+                                                            " A_M:" + self.objetoEntrada.amplitud_am +
+                                                            " F_M:" + self.objetoEntrada.frecuencia_am +
+                                                            " C:" + self.objetoEntrada.coeficiente)
+                else:
+                    self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.senial_elegida +
                                                         " A:" + self.objetoEntrada.amplitud +
                                                         " f:" + self.objetoEntrada.frecuencia +
                                                         " tau:" + self.objetoEntrada.tau +
