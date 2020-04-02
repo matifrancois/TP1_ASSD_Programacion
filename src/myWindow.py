@@ -87,8 +87,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                             {'senial_elegida': self.objetoEntrada.senial_elegida,
                                                             'amplitud': self.objetoEntrada.amplitud,
                                                             'frecuencia': self.objetoEntrada.frecuencia,
-                                                            'Rango_inicial': self.objetoEntrada.inicio_rango,
-                                                            'Rango_final': self.objetoEntrada.fin_rango,
+                                                            'periodos': self.objetoEntrada.periodos,
                                                             'tau': self.objetoEntrada.tau,
                                                             'T': self.objetoEntrada.T})
             else:
@@ -96,8 +95,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                             {'senial_elegida': self.objetoEntrada.senial_elegida,
                                                              'amplitud': self.objetoEntrada.amplitud,
                                                              'frecuencia': self.objetoEntrada.frecuencia,
-                                                             'Rango_inicial': self.objetoEntrada.inicio_rango,
-                                                             'Rango_final': self.objetoEntrada.fin_rango,
+                                                             'periodos': self.objetoEntrada.periodos,
                                                              'tau': self.objetoEntrada.tau,
                                                              'T': self.objetoEntrada.T,
                                                              'amplitud_am': self.objetoEntrada.amplitud_am,
@@ -112,8 +110,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                             " f:" + self.objetoEntrada.frecuencia +
                                                             " tau:" + self.objetoEntrada.tau +
                                                             " t:" + self.objetoEntrada.T +
-                                                            " Ri:" + self.objetoEntrada.inicio_rango +
-                                                            " Rf:" + self.objetoEntrada.fin_rango +
+                                                            " Per:" + self.objetoEntrada.periodos +
                                                             " A_M:" + self.objetoEntrada.amplitud_am +
                                                             " F_M:" + self.objetoEntrada.frecuencia_am +
                                                             " C:" + self.objetoEntrada.coeficiente)
@@ -123,8 +120,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                         " f:" + self.objetoEntrada.frecuencia +
                                                         " tau:" + self.objetoEntrada.tau +
                                                         " t:" + self.objetoEntrada.T +
-                                                        " Ri:" + self.objetoEntrada.inicio_rango +
-                                                        " Rf:" + self.objetoEntrada.fin_rango)
+                                                        " Per:" + self.objetoEntrada.periodos)
+
 
     def seteando_fichas(self):
         if self.x % 10 == 1:

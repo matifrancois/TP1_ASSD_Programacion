@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>603</width>
+    <width>428</width>
     <height>599</height>
    </rect>
   </property>
@@ -155,9 +155,6 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="lineEdit_amplitud"/>
-    </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_frecuencia">
       <property name="text">
@@ -168,13 +165,26 @@
     <item row="1" column="1">
      <widget class="QLineEdit" name="lineEdit_frecuencia"/>
     </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_amplitud"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_periodo"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_frecuencia_3">
+      <property name="text">
+       <string>Cant de períodos</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>530</y>
+     <x>70</x>
+     <y>520</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -232,55 +242,10 @@
     </property>
    </item>
   </widget>
-  <widget class="QWidget" name="layoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>150</y>
-     <width>151</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_4">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label_inicio_rango">
-      <property name="text">
-       <string>Inicio (s)</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="lineEdit_inicio_rango"/>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_fin_rango">
-      <property name="text">
-       <string>Fin (s)</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEdit_fin_rango"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>120</y>
-     <width>55</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Rango</string>
-   </property>
-  </widget>
   <widget class="QWidget" name="layoutWidget_3">
    <property name="geometry">
     <rect>
-     <x>400</x>
+     <x>230</x>
      <y>150</y>
      <width>181</width>
      <height>91</height>
@@ -322,9 +287,22 @@
   <widget class="QLabel" name="label_moduladora">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>234</x>
      <y>120</y>
-     <width>55</width>
+     <width>91</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_portadora">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>120</y>
+     <width>111</width>
      <height>16</height>
     </rect>
    </property>

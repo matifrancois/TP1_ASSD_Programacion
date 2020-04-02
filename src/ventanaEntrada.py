@@ -15,8 +15,7 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.frecuencia = ""
         self.senial_elegida = ""
         self.amplitud = ""
-        self.inicio_rango = ""
-        self.fin_rango = ""
+        self.periodos = ""
         self.tau = ""
         self.T = ""
         self.muestreo_elegido = ""
@@ -36,8 +35,7 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.tau = self.lineEdit_tao.text()
         self.T = self.lineEdit_t.text()
         self.muestreo_elegido = self.comboBox_tipo_muestreo.currentText()
-        self.inicio_rango = self.lineEdit_inicio_rango.text()
-        self.fin_rango = self.lineEdit_fin_rango.text()
+        self.periodos = self.lineEdit_periodo.text()
         self.amplitud_am = self.lineEdit_amplitud_moduladora.text()
         self.frecuencia_am = self.lineEdit_frecuencia_moduladora.text()
         self.coeficiente = self.lineEdit_coeficiente.text()
@@ -100,10 +98,14 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         :return:
         """
         if self.comboBox_senial.currentText() == "AM":
+            self.label_moduladora.setText("Moduladora")
+            self.label_portadora.setText("Portadora")
             self.lineEdit_amplitud_moduladora.setDisabled(False)
             self.lineEdit_frecuencia_moduladora.setDisabled(False)
             self.lineEdit_coeficiente.setDisabled(False)
         else:
+            self.label_moduladora.setText("")
+            self.label_portadora.setText("")
             self.lineEdit_amplitud_moduladora.setDisabled(True)
             self.lineEdit_frecuencia_moduladora.setDisabled(True)
             self.lineEdit_coeficiente.setDisabled(True)
