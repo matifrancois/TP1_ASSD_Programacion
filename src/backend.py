@@ -55,9 +55,10 @@ class Backend():
             return -1, "amplitud no es digito"
 
     # getNode()
-    # devuelve la información en tiempo del nodo indicado
+    # devuelve la información en tiempo del nodo indicado. DEVUELVE LA CANTIDAD DE PERIODOS A MOSTRAR
     def getNode(self, node_num):
-        return self.nodes[node_num]
+        x = min(POINTS, int(POINTS * 5/self.period_qty))  # si la cantidad de periodos a mostrar es inferior a 5, recorto el arreglo
+        return self.nodes[node_num][0:x-1][0:x-1]
 
     # parseString()
     # parser del string de comunicación con el frontend. Se asumen datos validados previamente
@@ -118,20 +119,35 @@ class Backend():
     # generateinput()
     # genera el primer nodo del circuito, teniendo en cuenta los parametros de la señal que recibe del objeto
     def generateInput(self):
-        self.nodes[0][TIME] = np.arange(0, self.period_qty*self.signalPeriod, (self.period_qty*self.signalPeriod) / POINTS)  # creo eje temporal
+
+        nPeriod = max(5, self.period_qty) # Se establece un mínimo de 5 periodos para la fft. De todas formas, se grafica la cantidad de períodos elegida
+
+        self.nodes[0][TIME] = np.arange(0, nPeriod*self.signalPeriod, (nPeriod*self.signalPeriod) / POINTS)  # creo eje temporal
 
         if self.signalType == "Senoidal":
             self.nodes[0][VALUE] = self.amplitude * np.sin(2 * np.pi * self.frequency * self.nodes[0][TIME])  # genero señal senoidal
         elif self.signalType == "Cuadratica":
-            raise NameError("Completar cuadratica")
+            i = 0
+            j = 0
+            while i < len(self.nodes[0][TIME]):
+                if self.nodes[0][TIME][i] < 4*(j+1):
+                    if self.nodes[0][TIME][i] < (j*4) + 2:
+                        self.nodes[0][VALUE][i] = self.amplitude * (self.nodes[0][TIME][i]- 4 * j) ** 2
+                    else:
+                        self.nodes[0][VALUE][i] = self.amplitude * (self.nodes[0][TIME][i] - 4 * j - 2) ** 2
+                    i += 1
+                else:
+                    j += 1
+            return
+
         elif type == "AM":
             self.nodes[0][VALUE] = self.carrierAmplitude * (1+self.modulationFactor*self.amplitude*np.cos(2*np.pi*self.frequency*self.nodes[0][VALUE])) * np.cos(2*np.pi*self.carrierFrequency*self.nodes[0][VALUE]) # genero señal AM
         else:  # asumo que es 3/2 seno
             i = 0
             j = 0
             while i < len(self.nodes[0][TIME]):
-                if self.nodes[0][TIME][i] < (j + 1) * (3 / 2) * self.period:
-                    self.nodes[0][VALUE][i] = self.amplitude * np.sin(2 * np.pi * self.frequency * (self.nodes[0][TIME][i] - j * (3 / 2) * self.period))
+                if self.nodes[0][TIME][i] < (j + 1) * self.signalPeriod:
+                    self.nodes[0][VALUE][i] = self.amplitude * np.sin(2 * np.pi * self.frequency * (3/2) * (self.nodes[0][TIME][i] - j * self.signalPeriod))
                     i += 1
                 else:
                     j += 1
@@ -141,8 +157,8 @@ class Backend():
     # emulateAAFilter()
     # emula el filtro anti-aliasing del circuito sobre un determinado arreglo
     def emulateAAFilter(self):
-        antiAlias = sps.lti(AAS_NUM,AAS_DEN)    # genero objeto funcion transferencia del filtro
-        self.nodes[1][VALUE] = antiAlias.output(self.nodes[0][VALUE],self.nodes[0][TIME])
+        antiAlias = sps.lti(AAS_NUM, AAS_DEN)    # genero objeto funcion transferencia del filtro
+        self.nodes[1][VALUE] = antiAlias.output(self.nodes[0][VALUE], self.nodes[0][TIME])
         return
 
     # emulateRecoveryFilter()
