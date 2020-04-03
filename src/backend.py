@@ -42,17 +42,59 @@ class Backend():
                      [np.zeros(POINTS), np.zeros(POINTS)],
                      [np.zeros(POINTS), np.zeros(POINTS)]]
 
-    def check_input(self, diccionario):
+    def check_input(self, dic):
         """
         comprueba que los valores del diccionario tengan sentido sino devuelve un flag y el string con el comentario
         indicando por que no tuvo sentido
         :param diccionario:
         :return: flag (0 all bien o -1 all mal), string
         """
-        if diccionario["amplitud"].isdigit():
-            return 0, ""
-        else:
-            return -1, "amplitud no es digito"
+        err = [0] # inicializo error nulo
+
+        if dic["type"] == "Senoidal" or dic["type"] == "3/2 Senoidal":
+            if dic["freq"] <= 0:
+                err[0] = -1
+                err.append("La frecuencia de la señal debe ser no nula y positiva.")
+
+            if not dic["amp"].isdigit() :
+                err[0] = -1
+                err.append("La amplitud de la señal debe ser un número real.")
+
+        elif dic["type"] == "AM":
+            if dic["carrierFreq"] <= 0:
+                err[0] = -1
+                err.append("La frecuencia de la señal portadora debe ser no nula y positiva.")
+
+            if dic["modulatingFreq"] <= 0:
+                err[0] = -1
+                err.append("La frecuencia de la señal moduladora  debe ser no nula y positiva.")
+
+            if not dic["carrierAmp"].isdigit():
+                err[0] = -1
+                err.append("La amplitud de la señal portadora debe ser un número real.")
+
+            if not dic["modulatingAmp"].isdigit():
+                err[0] = -1
+                err.append("La amplitud de la señal moduladora debe ser un número real.")
+
+            if (not dic["modulationFactor"].isdigit()) or dic["modulationFactor"] > 1 or dic["modulationFactor"] < 0 :
+                err[0] = -1
+                err.append("El factor de modulación debe estar entre 0 y 1.")
+
+        # Chequeos comunes a todas las señales
+
+        if (dic["samplePeriod"] <= 0) or (not dic["samplePeriod"].isdigit()):
+            err[0] = -1
+            err.append("El periodo de muestreo debe ser un número real no nulo.")
+
+        if (int(dic["periodQty"]) != dic["periodQty"]) or dic["periodQty"] <= 0:
+            err[0] = -1
+            err.append("El número de periodos a graficar debe ser entero y positivo.")
+
+        if dic["tau"] < 0 or (not dic["tau"].isdigit()):
+            err[0] = -1
+            err.append("Tau debe ser un número real positivo.")
+
 
     # getNode()
     # devuelve la información en tiempo del nodo indicado. DEVUELVE LA CANTIDAD DE PERIODOS A MOSTRAR
