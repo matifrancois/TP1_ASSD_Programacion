@@ -52,7 +52,7 @@ class Backend():
         err = [0] # inicializo error nulo
 
         if dic["type"] == "Senoidal" or dic["type"] == "3/2 Senoidal":
-            if dic["freq"] <= 0:
+            if (dic["freq"] <= 0) or not dic["freq"].isdigit():
                 err[0] = -1
                 err.append("La frecuencia de la señal debe ser no nula y positiva.")
 
@@ -61,11 +61,11 @@ class Backend():
                 err.append("La amplitud de la señal debe ser un número real.")
 
         elif dic["type"] == "AM":
-            if dic["carrierFreq"] <= 0:
+            if dic["carrierFreq"] <= 0 or not dic["carrierFreq"].isdigit():
                 err[0] = -1
                 err.append("La frecuencia de la señal portadora debe ser no nula y positiva.")
 
-            if dic["modulatingFreq"] <= 0:
+            if (dic["modulatingFreq"] <= 0) or not dic["modulatingFreq"].isdigit():
                 err[0] = -1
                 err.append("La frecuencia de la señal moduladora  debe ser no nula y positiva.")
 
@@ -95,11 +95,13 @@ class Backend():
             err[0] = -1
             err.append("Tau debe ser un número real positivo.")
 
+        return err
+
 
     # getNode()
     # devuelve la información en tiempo del nodo indicado. DEVUELVE LA CANTIDAD DE PERIODOS A MOSTRAR
     def getNode(self, node_num):
-        x = min(POINTS, int(POINTS * 5/self.period_qty))  # si la cantidad de periodos a mostrar es inferior a 5, recorto el arreglo
+        x = min(POINTS, int(POINTS * self.period_qty/5.0))  # si la cantidad de periodos a mostrar es inferior a 5, recorto el arreglo
         return self.nodes[node_num][0:x-1][0:x-1]
 
     # parseString()
@@ -127,14 +129,15 @@ class Backend():
             self.tau = float(fields[8].split(':')[1])
 
         self.signalPeriod = 1/self.frequency
-
         return
 
 
 
     # emulateCircuit()
     # emula cada nodo del circuito para una determinada configuración.
-    def emulateCircuit(self, circuitTopology):
+    def emulateCircuit(self, circuitTopology, signal):
+        self.parseString(signal)
+        self.generateInput() # Genero señal de entrada
 
         if circuitTopology[0] == '1':
             self.emulateAAFilter()
@@ -250,4 +253,4 @@ class Backend():
     def fourierTransform(self, node_num):
         fy = np.fft.fft(self.nodes[node_num]) / POINTS # transformada de fourier normalizada
         fx = np.fft.fftfreq(self.nodes[node_num][TIME].size, (max(self.nodes[node_num][TIME]) - min(self.nodes[node_num][TIME])) / POINTS) # frecuencias
-        return [fx, fy]
+        return fx, fy
