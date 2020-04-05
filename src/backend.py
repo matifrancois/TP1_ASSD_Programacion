@@ -1,14 +1,35 @@
 import scipy.signal as sps
 import numpy as np
+from copy import deepcopy
 
 # CANTIDAD DE PUNTOS POR NODO
-POINTS = 1000
+POINTS = 10000
 
-# COEFICENTES DE LOS FILTROS DEL CIRCUITO
-AAS_NUM = []
-AAS_DEN = []
-REC_NUM = []
-REC_DEN = []
+# POLOS Y CEROS DE LOS FILTROS
+
+POLES = [
+    -35144-10601j,
+    -35144+10601j,
+    -22315-22611j,
+    -22315+22611j,
+    -11004-24975j,
+    -11004+24975j,
+    -3260-24856j,
+    -3260+24856j
+]
+
+ZEROS = [
+    169084j,
+    -169084j,
+    59374j,
+    -59374j,
+    39672j,
+    -39672j,
+    33632j,
+    -33632j
+]
+
+GAIN = 0.00354787141836514
 
 # CONSTANTES FUNCIONALES DEL PROGRAMA
 TIME = 0
@@ -36,11 +57,7 @@ class Backend():
         self.modulationFactor = 0.0
 
         # Nodos del sistema
-        self.nodes = [[np.zeros(POINTS), np.zeros(POINTS)],
-                     [np.zeros(POINTS), np.zeros(POINTS)],
-                     [np.zeros(POINTS), np.zeros(POINTS)],
-                     [np.zeros(POINTS), np.zeros(POINTS)],
-                     [np.zeros(POINTS), np.zeros(POINTS)]]
+        self.nodes = [[np.zeros(POINTS), np.zeros(POINTS)], [np.zeros(POINTS), np.zeros(POINTS)], [np.zeros(POINTS), np.zeros(POINTS)], [np.zeros(POINTS), np.zeros(POINTS)], [np.zeros(POINTS), np.zeros(POINTS)]]
 
     def check_input(self, dic):
         """
@@ -126,6 +143,9 @@ class Backend():
             self.period_qty = float(fields[7].split(':')[1])
             self.tau = float(fields[8].split(':')[1])
 
+        if self.signalType == "Cuadratica":
+            self.frequency = 1.0/4.0
+
         self.signalPeriod = 1.0/self.frequency
         return
 
@@ -135,23 +155,29 @@ class Backend():
     # emula cada nodo del circuito para una determinada configuración.
     def emulateCircuit(self, circuitTopology, signal):
         self.parseString(signal)
-        self.generateInput() # Genero señal de entrada
+        self.generateInput() # Genero señal de entrada (nodo 0)
 
-        if (circuitTopology/1000)%10 == 1:
-            self.nodes[1] = self.nodes[0]
+        if (int(circuitTopology / 1000) % 10) == 1:
+            self.nodes[1] = deepcopy(self.nodes[0])
         else:
+            print("AAF activo")
             self.emulateAAFilter()
-        if (circuitTopology/100)%10 == 1:
+
+        if int(circuitTopology / 100) % 10 == 1:
+            print("SH activo")
             self.emulateSampleNHold()
         else:
-            self.nodes[2] = self.nodes[1]
-        if (circuitTopology/10)%10 == 1:
-            self.nodes[3] = self.nodes[2]
+            self.nodes[2] = deepcopy(self.nodes[1])
+        if int(circuitTopology / 10) % 10 == 1:
+            self.nodes[3] = deepcopy(self.nodes[2])
         else:
+            print("AnSwitch activo")
             self.emulateAnalogSwitch()
-        if circuitTopology%10 == 1:
-            self.nodes[4] = self.nodes[3]
+
+        if int(circuitTopology) % 10 == 1:
+            self.nodes[4] = deepcopy(self.nodes[3])
         else:
+            print("RF activo")
             self.emulateRecoveryFilter()
 
         return
@@ -170,11 +196,11 @@ class Backend():
             i = 0
             j = 0
             while i < len(self.nodes[0][TIME]):
-                if self.nodes[0][TIME][i] < 4*(j+1):
-                    if self.nodes[0][TIME][i] < (j*4) + 2:
-                        self.nodes[0][VALUE][i] = self.amplitude * (self.nodes[0][TIME][i]- 4 * j) ** 2
+                if self.nodes[0][TIME][i] < self.signalPeriod*(j+1):
+                    if self.nodes[0][TIME][i] < (j+0.5)*self.signalPeriod:
+                        self.nodes[0][VALUE][i] = self.amplitude * (self.nodes[0][TIME][i] - self.signalPeriod * j) ** 2
                     else:
-                        self.nodes[0][VALUE][i] = self.amplitude * (self.nodes[0][TIME][i] - 4 * j - 2) ** 2
+                        self.nodes[0][VALUE][i] = self.amplitude * (self.signalPeriod*(j+1) - self.nodes[0][TIME][i]) ** 2
                     i += 1
                 else:
                     j += 1
@@ -197,47 +223,48 @@ class Backend():
     # emulateAAFilter()
     # emula el filtro anti-aliasing del circuito sobre un determinado arreglo
     def emulateAAFilter(self):
-    #    antiAlias = sps.lti(AAS_NUM, AAS_DEN)    # genero objeto funcion transferencia del filtro
-    #    self.nodes[1][VALUE] = antiAlias.output(self.nodes[0][VALUE], self.nodes[0][TIME])
+        self.nodes[1] = deepcopy(self.nodes[0])
+        antiAlias = sps.lti(ZEROS, POLES, GAIN)    # genero objeto funcion transferencia del filtro
+        self.nodes[1][TIME], self.nodes[1][VALUE], _ = antiAlias.output(deepcopy(self.nodes[1][VALUE]), deepcopy(self.nodes[1][TIME]))
+        print(self.nodes[1][VALUE])
         return
 
     # emulateRecoveryFilter()
     # emula el filtro de recuperación del circuito sobre un determinado arreglo
     def emulateRecoveryFilter(self):
-    #    recovery = sps.lti(REC_NUM, REC_DEN)    # genero objeto funcion transferencia del filtro
-    #    self.nodes[4][VALUE] = recovery.output(self.nodes[3][VALUE], self.nodes[3][TIME])
+        self.nodes[4] = deepcopy(self.nodes[3])
+        recovery = sps.lti(ZEROS, POLES, GAIN)    # genero objeto funcion transferencia del filtro
+        self.nodes[4][TIME], self.nodes[4][VALUE], _ = recovery.output(deepcopy(self.nodes[4][VALUE]), deepcopy(self.nodes[4][TIME]))
         return
 
 
     # emulateSampleNHold()
     # emula el sample & hold del circuito
     def emulateSampleNHold(self):
-        arr = self.nodes[1]
+        self.nodes[2] = deepcopy(self.nodes[1])
         i = 1
         j = 1                                            # set en 1 dado que el primer valor del arreglo se considera muestreado
-        while i < len(arr[TIME]):                        # para cada elemento del arreglo
-            if (arr[TIME][i] - arr[TIME][0]) < j*self.samplePeriod: # arr[TIME][0] representa el tiempo inicial
-                arr[VALUE][i] = arr[VALUE][i-1]          # asigno valor anterior al actual
+        while i < len(self.nodes[2][TIME]):                        # para cada elemento del arreglo
+            if (self.nodes[2][TIME][i] - self.nodes[2][TIME][0]) < j*self.samplePeriod: # arr[TIME][0] representa el tiempo inicial
+                self.nodes[2][VALUE][i] = deepcopy(self.nodes[2][VALUE][i-1])          # asigno valor anterior al actual
             else:
                 j += 1                                   # incremento contador de períodos
             i += 1
-        self.nodes[2] = arr
         return
 
     # emulateAnalogSwitch()
     # emula la llave analógica del circuito
     def emulateAnalogSwitch(self):
-        arr = self.nodes[2]
+        self.nodes[3] = deepcopy(self.nodes[2])
         i = 0
         j = 0
-        while i < len(arr[TIME]):
-            if (arr[TIME][i] - arr[TIME][0]) < (j+1)*self.samplePeriod:
-                if (arr[TIME][i] - arr[TIME][0]) > (j*self.samplePeriod + self.tau):
-                    arr[VALUE][i] = 0   # fuera del pulso
+        while i < len(self.nodes[3][TIME]):
+            if (self.nodes[3][TIME][i] - self.nodes[3][TIME][0]) < (j+1)*self.samplePeriod:
+                if (self.nodes[3][TIME][i] - self.nodes[3][TIME][0]) > (j*self.samplePeriod + self.tau):
+                    self.nodes[3][VALUE][i] = 0   # fuera del pulso
                 i += 1
             else:
                 j += 1                         # si esta fuera de rango, incremento contador de periodos
-        self.nodes[3] = arr
         return
 
     # fourierTransform()
@@ -247,6 +274,6 @@ class Backend():
     #   - se establece un mínimo de 5 períodos de la señal, para que el gráfico final sea representativo del espectro
     def fourierTransform(self, node_num):
         w = sps.windows.blackman(POINTS)
-        fy = np.fft.fft(self.nodes[node_num][VALUE]* w)  # transformada de fourier
+        fy = np.fft.fft(self.nodes[node_num][VALUE] * w) / POINTS  # transformada de fourier
         fx = np.fft.fftfreq(self.nodes[node_num][TIME].size, (max(self.nodes[node_num][TIME]) - min(self.nodes[node_num][TIME])) / POINTS) # frecuencias
         return fx, fy
