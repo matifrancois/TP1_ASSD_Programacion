@@ -7,24 +7,42 @@ POINTS = 10000
 
 # POLOS Y CEROS DE LOS FILTROS
 
-POLES = [
+POLES1 = [
     -35144-10601j,
-    -35144+10601j,
+    -35144+10601j
+]
+
+POLES2 = [
     -22315-22611j,
-    -22315+22611j,
+    -22315+22611j
+]
+
+POLES3 = [
     -11004-24975j,
-    -11004+24975j,
+    -11004+24975j
+]
+
+POLES4 = [
     -3260-24856j,
     -3260+24856j
 ]
 
-ZEROS = [
+ZEROS1 = [
     169084j,
-    -169084j,
+    -169084j
+]
+
+ZEROS2 = [
     59374j,
-    -59374j,
+    -59374j
+]
+
+ZEROS3 = [
     39672j,
-    -39672j,
+    -39672j
+]
+
+ZEROS4 = [
     33632j,
     -33632j
 ]
@@ -224,17 +242,38 @@ class Backend():
     # emula el filtro anti-aliasing del circuito sobre un determinado arreglo
     def emulateAAFilter(self):
         self.nodes[1] = deepcopy(self.nodes[0])
-        antiAlias = sps.lti(ZEROS, POLES, GAIN)    # genero objeto funcion transferencia del filtro
-        self.nodes[1][TIME], self.nodes[1][VALUE], _ = antiAlias.output(deepcopy(self.nodes[1][VALUE]), deepcopy(self.nodes[1][TIME]))
-        print(self.nodes[1][VALUE])
+
+        antiAlias1 = sps.lti(ZEROS1, POLES1, 1)  # genero objeto funcion transferencia del filtro
+        antiAlias2 = sps.lti(ZEROS2, POLES2, 1)
+        antiAlias3 = sps.lti(ZEROS3, POLES3, 1)
+        antiAlias4 = sps.lti(ZEROS4, POLES4, GAIN)
+
+        x, y, _ = antiAlias1.output(self.nodes[1][VALUE], self.nodes[1][TIME])
+        x, y, _ = antiAlias2.output(y, x)
+        x, y, _ = antiAlias3.output(y, x)
+        x, y, _ = antiAlias4.output(y, x)
+
+        self.nodes[1][TIME] = x
+        self.nodes[1][VALUE] = y
         return
 
     # emulateRecoveryFilter()
     # emula el filtro de recuperación del circuito sobre un determinado arreglo
     def emulateRecoveryFilter(self):
         self.nodes[4] = deepcopy(self.nodes[3])
-        recovery = sps.lti(ZEROS, POLES, GAIN)    # genero objeto funcion transferencia del filtro
-        self.nodes[4][TIME], self.nodes[4][VALUE], _ = recovery.output(deepcopy(self.nodes[4][VALUE]), deepcopy(self.nodes[4][TIME]))
+        
+        recovery1 = sps.lti(ZEROS1, POLES1, 1)    # genero objeto funcion transferencia del filtro
+        recovery2 = sps.lti(ZEROS2, POLES2, 1)
+        recovery3 = sps.lti(ZEROS3, POLES3, 1)
+        recovery4 = sps.lti(ZEROS4, POLES4, GAIN)
+        
+        x, y, _ = recovery1.output(self.nodes[4][VALUE], self.nodes[4][TIME])
+        x, y, _ = recovery2.output(y,x)
+        x, y, _ = recovery3.output(y,x)
+        x, y, _ = recovery4.output(y,x)
+        
+        self.nodes[4][TIME] = x
+        self.nodes[4][VALUE] = y
         return
 
 
