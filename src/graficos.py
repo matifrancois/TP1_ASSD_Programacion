@@ -89,11 +89,10 @@ class   MatplotlibWidget(QWidget, Ui_Form):
     def on_plot_update(self, nodo, senial_a_graficar, backend, x):
         """ Slot/Callback usado para actualizar datos en el Axes """
 
-
+        backend.emulateCircuit(x, senial_a_graficar)
         # buscamos los datos del backend, 2 refiere al de la frecuencia!
-        self.x_axis, self.y_axis, self.x_axis2, self.y_axis2 = self.llamando_backend(nodo, senial_a_graficar, backend, x)
-
-
+        self.x_axis, self.y_axis = backend.getNode(nodo)
+        self.x_axis2, self.y_axis2 = backend.fourierTransform(nodo)
         # Limpiamos el axes, agregamos los puntos, y actualizamos el canvas
         # IMPORTANTE! Te invito a comentar para que veas la importancia del .clear() y .draw()
 
@@ -106,7 +105,7 @@ class   MatplotlibWidget(QWidget, Ui_Form):
 
         #self.axes.clear()
         self.axes.plot(self.x_axis, self.y_axis, label="Señal")
-        self.axes2.plot(self.x_axis2, self.y_axis2, label="Señal2")
+        self.axes2.plot(self.x_axis2, abs(self.y_axis2), label="Señal2")
         # para mostrar la leyenda TODO (esto estaria bueno para ponerle que nodo es
         self.legend = self.figure.legend()
         self. legend2 = self.figure2.legend()
@@ -131,6 +130,3 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         self.canvas.draw()
         self.canvas2.draw()
 
-
-    def llamando_backend(self, nodo, senial_a_graficar, backend, x):
-        return backend.devuelvo(nodo, senial_a_graficar, x)

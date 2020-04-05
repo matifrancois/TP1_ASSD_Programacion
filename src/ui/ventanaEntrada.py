@@ -146,7 +146,7 @@ class Ui_Dialog(object):
         self.subtitulo_2.setText(_translate("Dialog", "Introduzca las caracteristicas del muestreo deseado"))
         self.comboBox_senial.setItemText(0, _translate("Dialog", "Senoidal"))
         self.comboBox_senial.setItemText(1, _translate("Dialog", "Cuadratica"))
-        self.comboBox_senial.setItemText(2, _translate("Dialog", "3/2 Senoidal"))
+        self.comboBox_senial.setItemText(2, _translate("Dialog", "3/2Senoidal"))
         self.comboBox_senial.setItemText(3, _translate("Dialog", "AM"))
         self.label_amplitud_2.setText(_translate("Dialog", "Tiempo Tao (s)"))
         self.label_frecuencia_2.setText(_translate("Dialog", "Tiempo T (s)"))
