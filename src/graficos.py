@@ -43,12 +43,9 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         self.toolbar2 = NavigationToolbar(self.canvas2, self)
         self.boton_cerrar.clicked.connect(self.cerrar)
         self.pushButton_borrar.clicked.connect(self.borrar)
+        self.leyendas = []
 
-
-        self.figure.legend()
-        self.figure2.legend()
-
-        # TODO revisar para que la barra de tareas no quede arriba de los graficos
+        # Si, lo se, desperdicio con grid pero anda y bien idealmente con vertically
         ###########################################################################
 
         self.grid = QGridLayout()
@@ -61,12 +58,6 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         self.grid.addWidget(self.toolbar2, 7, 0)
         self.grid.addWidget(self.boton_cerrar, 8, 0)
         self.grid.addWidget(self.pushButton_borrar, 9, 0)
-        #self.grid.addWidget(self.label_auxiliar2, 9, 0)
-
-        #self.grid.addWidget(self.pushButton_borrar, 5, 0)  # Se le agrega el canvas al widget
-        #self.grid.addWidget(self.boton_cerrar, 5, 1)  # Se le agrega el canvas al widget
-
-
         self.setLayout(self.grid)
 
         ###########################################################################
@@ -83,8 +74,6 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         self.plotter_container.setCurrentIndex(canvas_index)
         canvas_index2 = self.plotter_container2.addWidget(self.canvas2)
         self.plotter_container2.setCurrentIndex(canvas_index2)
-        # Algo mas emocionante, cambiemos el contenido con un callback al boton de pantalla!
-        #self.on_plot_update()
 
     @pyqtSlot()
     def on_plot_update(self, nodo, senial_a_graficar, backend, x, nombre):
@@ -103,17 +92,12 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         self.axes2.set_ylabel("FFT")
 
 
-
-        #self.axes.clear()
         self.axes.plot(self.x_axis, self.y_axis, label=nombre)
         self.axes2.plot(self.x_axis2, abs(self.y_axis2), label=nombre + " FFT")
-        # para mostrar la leyenda TODO (esto estaria bueno para ponerle que nodo es
-        self.legend = self.figure.legend()
-        self.legend2 = self.figure2.legend()
+        self.axes.legend()
+        self.axes2.legend()
         self.canvas.draw()
-        #self.axes2.clear()
         self.canvas2.draw()
-        # Configuramos los ejes para que tengan un label
 
 
 
@@ -124,8 +108,6 @@ class   MatplotlibWidget(QWidget, Ui_Form):
 
     # ver por que no se borran los legend
     def borrar(self):
-        #self.legend.remove()
-        #self.legend2.remove()
         self.axes.clear()
         self.axes2.clear()
         self.canvas.draw()

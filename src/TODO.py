@@ -10,4 +10,4 @@
 
 
 # Accesorios
-# falta que se acoplen los tamaños al agrandar la pantalla
+#falta que la nueva señal se ponga primero en el combobox (se la funcion no se por que no funciona) (insetPolicy y insertAtTop)
