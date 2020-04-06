@@ -19,7 +19,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         
         """
+        self.comboBox_senial_a_graficar.setInsertPolicy(QComboBox.InsertAtTop)
         self.x = 0
+        self.ya_borro_puntos = False
         self.almacenamiento = 0
         #self.flag_check_input = 0
         #self.texto_check_input = ""
@@ -71,8 +73,11 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         :return:
         """
         self.widgetGrafico.move(1400, 80)
-        self.widgetGrafico.show()
-        self.widgetGrafico.on_plot_update(nodo, self.comboBox_senial_a_graficar.currentText(), backend, self.x)
+        if self.comboBox_senial_a_graficar.currentText() == "...":
+            QMessageBox.warning(self, "Error", "No introdujo ninguna señal valida", QMessageBox.Discard)
+        else:
+            self.widgetGrafico.show()
+            self.widgetGrafico.on_plot_update(nodo, self.comboBox_senial_a_graficar.currentText(), backend, self.x, self.objetoEntrada.nombre)
 
     def input(self):
         """
@@ -106,12 +111,13 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             if self.arreglo_check_input[0] == -1:
                 i=1
-                while(i<len(self.arreglo_check_input)):
+                while i<len(self.arreglo_check_input):
                     self.texto_error += self.arreglo_check_input[i] + '\n'
                     i=i+1
                 QMessageBox.warning(self, "Error", self.texto_error, QMessageBox.Discard)
                 self.texto_error = ""
             else:
+
                 if self.objetoEntrada.senial_elegida == "AM":
                     self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.senial_elegida +
                                                             " A:" + self.objetoEntrada.amplitud +
@@ -128,8 +134,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                         " f:" + self.objetoEntrada.frecuencia +
                                                         " t:" + self.objetoEntrada.T +
                                                         " Per:" + self.objetoEntrada.periodos +
-                                                        " tau:" + self.objetoEntrada.tau )
-
+                                                        " tau:" + self.objetoEntrada.tau)
+                if self.comboBox_senial_a_graficar.count() > 1 and self.ya_borro_puntos == False:
+                    self.comboBox_senial_a_graficar.removeItem(0)
+                    self.ya_borro_puntos = True
 
     def seteando_fichas(self):
         if self.x % 10 == 1:

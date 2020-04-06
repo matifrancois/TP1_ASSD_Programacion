@@ -27,6 +27,7 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.lineEdit_amplitud_moduladora.setDisabled(True)
         self.lineEdit_frecuencia_moduladora.setDisabled(True)
         self.lineEdit_coeficiente.setDisabled(True)
+        self.nombre = ""
 
     def getItem(self, x):
         self.senial_elegida = self.comboBox_senial.currentText()
@@ -39,6 +40,7 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.amplitud_am = self.lineEdit_amplitud_moduladora.text()
         self.frecuencia_am = self.lineEdit_frecuencia_moduladora.text()
         self.coeficiente = self.lineEdit_coeficiente.text()
+        self.nombre = self.lineEdit_nombre.text()
         if self.muestreo_elegido == "Natural":
             return self.muestreo_natural(x)
         elif self.muestreo_elegido == "Instantaneo":

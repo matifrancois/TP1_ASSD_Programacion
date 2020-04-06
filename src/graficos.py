@@ -32,11 +32,11 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         # corresponde al espacio utilizado para dibujar y despues sobre el se agregan pares de ejes.
         self.figure = Figure()
         # La siguiente linea se encarga de ajustar los valores por def de la ventana para que se vean bien
-        self.figure.subplots_adjust(left=0.127, bottom=0.234, right=0.981, top=0.921, wspace=0.2, hspace=0.2)
+        self.figure.subplots_adjust(left=0.142, bottom=0.234, right=0.981, top=0.921, wspace=0.2, hspace=0.2)
         self.canvas = FigureCanvas(self.figure)
         self.figure2 = Figure()
         # La siguiente linea se encarga de ajustar los valores por def de la ventana para que se vean bien
-        self.figure2.subplots_adjust(left=0.127, bottom=0.234, right=0.981, top=0.921, wspace=0.2, hspace=0.2)
+        self.figure2.subplots_adjust(left=0.142, bottom=0.234, right=0.981, top=0.921, wspace=0.2, hspace=0.2)
         self.canvas2 = FigureCanvas(self.figure2)
         # cada gráfico tiene un toolbar con herramientos para trabajar sobre él
         self.toolbar = NavigationToolbar(self.canvas, self)
@@ -59,8 +59,9 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         self.grid.addWidget(self.sub_titulo_2, 5, 0)
         self.grid.addWidget(self.plotter_container2, 6, 0)  # Se le agrega el canvas al widget
         self.grid.addWidget(self.toolbar2, 7, 0)
-        self.grid.addWidget(self.label_auxiliar, 8, 0)
-        self.grid.addWidget(self.label_auxiliar2, 9, 0)
+        self.grid.addWidget(self.boton_cerrar, 8, 0)
+        self.grid.addWidget(self.pushButton_borrar, 9, 0)
+        #self.grid.addWidget(self.label_auxiliar2, 9, 0)
 
         #self.grid.addWidget(self.pushButton_borrar, 5, 0)  # Se le agrega el canvas al widget
         #self.grid.addWidget(self.boton_cerrar, 5, 1)  # Se le agrega el canvas al widget
@@ -86,7 +87,7 @@ class   MatplotlibWidget(QWidget, Ui_Form):
         #self.on_plot_update()
 
     @pyqtSlot()
-    def on_plot_update(self, nodo, senial_a_graficar, backend, x):
+    def on_plot_update(self, nodo, senial_a_graficar, backend, x, nombre):
         """ Slot/Callback usado para actualizar datos en el Axes """
 
         backend.emulateCircuit(x, senial_a_graficar)
@@ -104,11 +105,11 @@ class   MatplotlibWidget(QWidget, Ui_Form):
 
 
         #self.axes.clear()
-        self.axes.plot(self.x_axis, self.y_axis, label="Señal")
-        self.axes2.plot(self.x_axis2, abs(self.y_axis2), label="Señal2")
+        self.axes.plot(self.x_axis, self.y_axis, label=nombre)
+        self.axes2.plot(self.x_axis2, abs(self.y_axis2), label=nombre + " FFT")
         # para mostrar la leyenda TODO (esto estaria bueno para ponerle que nodo es
         self.legend = self.figure.legend()
-        self. legend2 = self.figure2.legend()
+        self.legend2 = self.figure2.legend()
         self.canvas.draw()
         #self.axes2.clear()
         self.canvas2.draw()

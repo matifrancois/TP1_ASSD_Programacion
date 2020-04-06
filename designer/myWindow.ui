@@ -181,6 +181,15 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="editable">
+     <bool>false</bool>
+    </property>
+    <property name="maxVisibleItems">
+     <number>10</number>
+    </property>
+    <property name="insertPolicy">
+     <enum>QComboBox::InsertAtBottom</enum>
+    </property>
     <item>
      <property name="text">
       <string>...</string>
