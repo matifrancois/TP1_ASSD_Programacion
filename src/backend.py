@@ -3,7 +3,7 @@ import numpy as np
 from copy import deepcopy
 
 # CANTIDAD DE PUNTOS POR NODO
-POINTS = 10000
+POINTS = 500000
 
 # POLOS Y CEROS DE LOS FILTROS
 
@@ -128,6 +128,11 @@ class Backend():
         if (not dic["tau"].replace(".","1",1).isdigit()) or float(dic["tau"]) < 0:
             err[0] = -1
             err.append("Tau debe ser un número real positivo.")
+
+        elif (not dic["samplePeriod"].replace(".","1",1).isdigit()) or (float(dic["tau"]) > float(dic["samplePeriod"])):
+            err[0] = -1
+            err.append("Tau no puede ser mayor que el período de muestreo")
+
         return err
 
 
@@ -160,9 +165,6 @@ class Backend():
             self.samplePeriod = float(fields[6].split(':')[1])
             self.period_qty = float(fields[7].split(':')[1])
             self.tau = float(fields[8].split(':')[1])
-
-        if self.signalType == "Cuadratica":
-            self.frequency = 1.0/4.0
 
         self.signalPeriod = 1.0/self.frequency
         return
