@@ -23,26 +23,24 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.x = 0
         self.ya_borro_puntos = False
         self.almacenamiento = 0
-        #self.flag_check_input = 0
-        #self.texto_check_input = ""
         self.arreglo_check_input = []
         self.texto_error = ""
         self.backend = backend
         self.label.setPixmap(QtGui.QPixmap('assets\\fotos_fondo\\tp1_assd' + str(int(self.x)) + '.jpg'))
-        self.llave1.pressed.connect(lambda: self.cambia(1000,
-                                                        not self.llave1.isChecked()))  # seteamos el callback para cada que toquen la checkBox
-        self.llave2.pressed.connect(lambda: self.cambia(100,
-                                                        not self.llave2.isChecked()))  # seteamos el callback para cada que presione la checkBox
-        self.llave3.pressed.connect(lambda: self.cambia(10,
-                                                        not self.llave3.isChecked()))  # seteamos el callback para cada que presionen la checkBox
-        self.llave4.pressed.connect(lambda: self.cambia(1,
-                                                        not self.llave4.isChecked()))  # seteamos el callback para cada que presionen la checkBox
+        # seteamos el callback para cada que toquen la checkBox.
+        self.llave1.pressed.connect(lambda: self.cambia(1000, not self.llave1.isChecked()))
+        self.llave2.pressed.connect(lambda: self.cambia(100, not self.llave2.isChecked()))
+        self.llave3.pressed.connect(lambda: self.cambia(10, not self.llave3.isChecked()))
+        self.llave4.pressed.connect(lambda: self.cambia(1, not self.llave4.isChecked()))
+        # seteamos el callback para cada que toque los botones para graficar.
         self.pushButton_0.clicked.connect(lambda: self.graficando(0, self.backend))
         self.pushButton_1.clicked.connect(lambda: self.graficando(1, self.backend))
         self.pushButton_2.clicked.connect(lambda: self.graficando(2, self.backend))
         self.pushButton_3.clicked.connect(lambda: self.graficando(3, self.backend))
         self.pushButton_4.clicked.connect(lambda: self.graficando(4, self.backend))
+        # Al pulsar el boton de entrada de datos.
         self.pushButton_input.clicked.connect(self.input)
+        #defino los objetos a utilizar.
         self.objetoEntrada = Ventana_Entrada()
         self.widgetGrafico = MatplotlibWidget()
 
@@ -69,22 +67,26 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def graficando(self, nodo, backend):
         """
-        Esta funcion muestra el widget
+        Esta funcion muestra el widget grafico
         :return:
         """
         self.widgetGrafico.move(1400, 80)
         if self.comboBox_senial_a_graficar.currentText() == "...":
             QMessageBox.warning(self, "Error", "No introdujo ninguna señal valida", QMessageBox.Discard)
         else:
+            #mostramos el grafico y llamamos a on_plot_update para que actualice los datos graficados
             self.widgetGrafico.show()
-            self.widgetGrafico.on_plot_update(nodo, self.comboBox_senial_a_graficar.currentText(), backend, self.x, self.objetoEntrada.nombre)
+            self.fields = self.comboBox_senial_a_graficar.currentText().split()
+            self.widgetGrafico.on_plot_update(nodo, self.comboBox_senial_a_graficar.currentText(), backend, self.x, self.fields[0])
 
     def input(self):
         """
-        Muestra el objeto entrada
+        Muestra el objeto entrada (la ventana de entrada)
         :return:
         """
+        #si el objeto entrada se pudo ejecutar
         if self.objetoEntrada.exec():
+            # Devuelve el numero a sumar a x para que las fichitas queden seteadas como corresponde segun el input
             self.almacenamiento = self.objetoEntrada.getItem(self.x)
             self.x += self.almacenamiento
             self.seteando_fichas()
@@ -105,7 +107,6 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                              'periodQty': self.objetoEntrada.periodos,
                                                              'tau': self.objetoEntrada.tau,
                                                              'samplePeriod': self.objetoEntrada.T,
-                                                             'modulatingAmp': self.objetoEntrada.amplitud_am,
                                                              'modulatingFreq': self.objetoEntrada.frecuencia_am,
                                                              'modulationFactor': self.objetoEntrada.coeficiente})
 
@@ -119,17 +120,18 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
 
                 if self.objetoEntrada.senial_elegida == "AM":
-                    self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.senial_elegida +
+                    self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.nombre +
+                                                            " " + self.objetoEntrada.senial_elegida +
                                                             " A:" + self.objetoEntrada.amplitud +
                                                             " f:" + self.objetoEntrada.frecuencia +
-                                                            " A_M:" + self.objetoEntrada.amplitud_am +
                                                             " F_M:" + self.objetoEntrada.frecuencia_am +
                                                             " C:" + self.objetoEntrada.coeficiente +
                                                             " t:" + self.objetoEntrada.T +
                                                             " Per:" + self.objetoEntrada.periodos +
-                                                            " tau:" + self.objetoEntrada.tau)
+                                                            " tau:" + self.objetoEntrada.tau )
                 else:
-                    self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.senial_elegida +
+                    self.comboBox_senial_a_graficar.addItem(self.objetoEntrada.nombre +
+                                                        " "   + self.objetoEntrada.senial_elegida +
                                                         " A:" + self.objetoEntrada.amplitud +
                                                         " f:" + self.objetoEntrada.frecuencia +
                                                         " t:" + self.objetoEntrada.T +
@@ -140,6 +142,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.ya_borro_puntos = True
 
     def seteando_fichas(self):
+        """
+        Esta funcion se fija cuales son los digitos de x y en base a esos valores modifica los estados de los checks
+        :return:
+        """
         if self.x % 10 == 1:
             self.llave4.setChecked(True)
         else:

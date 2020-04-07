@@ -3,7 +3,7 @@ import numpy as np
 from copy import deepcopy
 
 # CANTIDAD DE PUNTOS POR NODO
-POINTS = 500000
+POINTS = 5000
 
 # POLOS Y CEROS DE LOS FILTROS
 
@@ -107,9 +107,6 @@ class Backend():
                 err[0] = -1
                 err.append("La amplitud de la señal portadora debe ser un número real.")
 
-            if not dic["modulatingAmp"].replace(".","1",1).isdigit() or float(dic["modulatingAmp"]) < 0:
-                err[0] = -1
-                err.append("La amplitud de la señal moduladora debe ser un número real.")
 
             if (not dic["modulationFactor"].replace(".","1",1).isdigit()) or float(dic["modulationFactor"]) > 1 or float(dic["modulationFactor"]) < 0:
                 err[0] = -1
@@ -147,19 +144,18 @@ class Backend():
     # actualiza los datos del objeto
     def parseString(self, string):
         fields = string.split()  # tokenizacion del string
-        self.signalType = fields[0]
+        self.signalType = fields[1]
 
         if self.signalType != 'AM':
-            self.amplitude = float(fields[1].split(':')[1])
-            self.frequency = float(fields[2].split(':')[1])
-            self.samplePeriod = float(fields[3].split(':')[1])
-            self.period_qty = float(fields[4].split(':')[1])
-            self.tau = float(fields[5].split(':')[1])
+            self.amplitude = float(fields[2].split(':')[1])
+            self.frequency = float(fields[3].split(':')[1])
+            self.samplePeriod = float(fields[4].split(':')[1])
+            self.period_qty = float(fields[5].split(':')[1])
+            self.tau = float(fields[6].split(':')[1])
 
         else:
-            self.carrierAmplitude = float(fields[1].split(':')[1])
-            self.carrierFrequency = float(fields[2].split(':')[1])
-            self.amplitude = float(fields[3].split(':')[1])     # moduladora
+            self.carrierAmplitude = float(fields[2].split(':')[1])
+            self.carrierFrequency = float(fields[3].split(':')[1])
             self.frequency = float(fields[4].split(':')[1])     # moduladora
             self.modulationFactor = float(fields[5].split(':')[1])
             self.samplePeriod = float(fields[6].split(':')[1])
@@ -227,7 +223,7 @@ class Backend():
             return
 
         elif self.signalType == "AM":
-            self.nodes[0][VALUE] = self.carrierAmplitude * (1+self.modulationFactor*self.amplitude*np.cos(2*np.pi*self.frequency*self.nodes[0][TIME])) * np.cos(2*np.pi*self.carrierFrequency*self.nodes[0][TIME]) # genero señal AM
+            self.nodes[0][VALUE] = self.carrierAmplitude * (1+self.modulationFactor*np.cos(2*np.pi*self.frequency*self.nodes[0][TIME])) * np.cos(2*np.pi*self.carrierFrequency*self.nodes[0][TIME]) # genero señal AM
         else:  # asumo que es 3/2 seno
             i = 0
             j = 0

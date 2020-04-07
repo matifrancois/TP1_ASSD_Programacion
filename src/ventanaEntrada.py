@@ -24,7 +24,6 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.amplitud_am = ""
         self.frecuencia_am = ""
         self.coeficiente = ""
-        self.lineEdit_amplitud_moduladora.setDisabled(True)
         self.lineEdit_frecuencia_moduladora.setDisabled(True)
         self.lineEdit_coeficiente.setDisabled(True)
         self.nombre = ""
@@ -37,7 +36,6 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         self.T = self.lineEdit_t.text()
         self.muestreo_elegido = self.comboBox_tipo_muestreo.currentText()
         self.periodos = self.lineEdit_periodo.text()
-        self.amplitud_am = self.lineEdit_amplitud_moduladora.text()
         self.frecuencia_am = self.lineEdit_frecuencia_moduladora.text()
         self.coeficiente = self.lineEdit_coeficiente.text()
         self.nombre = self.lineEdit_nombre.text()
@@ -102,12 +100,10 @@ class Ventana_Entrada(QDialog, Ui_Dialog):
         if self.comboBox_senial.currentText() == "AM":
             self.label_moduladora.setText("Moduladora")
             self.label_portadora.setText("Portadora")
-            self.lineEdit_amplitud_moduladora.setDisabled(False)
             self.lineEdit_frecuencia_moduladora.setDisabled(False)
             self.lineEdit_coeficiente.setDisabled(False)
         else:
             self.label_moduladora.setText("")
             self.label_portadora.setText("")
-            self.lineEdit_amplitud_moduladora.setDisabled(True)
             self.lineEdit_frecuencia_moduladora.setDisabled(True)
             self.lineEdit_coeficiente.setDisabled(True)
