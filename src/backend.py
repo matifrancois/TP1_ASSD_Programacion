@@ -108,7 +108,7 @@ class Backend():
                 err.append("La amplitud de la señal portadora debe ser un número real.")
 
 
-            if (not dic["modulationFactor"].replace(".","1",1).isdigit()) or float(dic["modulationFactor"]) > 1 or float(dic["modulationFactor"]) < 0:
+            if (not dic["modulationFactor"].replace(".","1",1).isdigit()) or float(dic["modulationFactor"]) < 0:
                 err[0] = -1
                 err.append("El factor de modulación debe estar entre 0 y 1.")
 
@@ -176,24 +176,20 @@ class Backend():
         if (int(circuitTopology / 1000) % 10) == 1:
             self.nodes[1] = deepcopy(self.nodes[0])
         else:
-            print("AAF activo")
             self.emulateAAFilter()
 
         if int(circuitTopology / 100) % 10 == 1:
-            print("SH activo")
             self.emulateSampleNHold()
         else:
             self.nodes[2] = deepcopy(self.nodes[1])
         if int(circuitTopology / 10) % 10 == 1:
             self.nodes[3] = deepcopy(self.nodes[2])
         else:
-            print("AnSwitch activo")
             self.emulateAnalogSwitch()
 
         if int(circuitTopology) % 10 == 1:
             self.nodes[4] = deepcopy(self.nodes[3])
         else:
-            print("RF activo")
             self.emulateRecoveryFilter()
 
         return
@@ -223,7 +219,7 @@ class Backend():
             return
 
         elif self.signalType == "AM":
-            self.nodes[0][VALUE] = self.carrierAmplitude * (1+self.modulationFactor*np.cos(2*np.pi*self.frequency*self.nodes[0][TIME])) * np.cos(2*np.pi*self.carrierFrequency*self.nodes[0][TIME]) # genero señal AM
+            self.nodes[0][VALUE] = self.carrierAmplitude * (1+self.modulationFactor*np.cos(2*np.pi*self.frequency*self.nodes[0][TIME])) * np.cos(2*np.pi*self.carrierFrequency*self.nodes[0][TIME])  # genero señal AM
         else:  # asumo que es 3/2 seno
             i = 0
             j = 0
@@ -242,7 +238,7 @@ class Backend():
         self.nodes[1] = deepcopy(self.nodes[0])
 
         antiAlias1 = sps.lti(ZEROS1, POLES1, 1)  # genero objeto funcion transferencia del filtro
-        antiAlias2 = sps.lti(ZEROS2, POLES2, 1)
+        antiAlias2 = sps.lti(ZEROS2, POLES2, 1)  # se segmenta al filtro para evitar oscilaciones
         antiAlias3 = sps.lti(ZEROS3, POLES3, 1)
         antiAlias4 = sps.lti(ZEROS4, POLES4, GAIN)
 
@@ -261,14 +257,14 @@ class Backend():
         self.nodes[4] = deepcopy(self.nodes[3])
         
         recovery1 = sps.lti(ZEROS1, POLES1, 1)    # genero objeto funcion transferencia del filtro
-        recovery2 = sps.lti(ZEROS2, POLES2, 1)
+        recovery2 = sps.lti(ZEROS2, POLES2, 1)    # se segmenta al filtro para evitar oscilaciones
         recovery3 = sps.lti(ZEROS3, POLES3, 1)
         recovery4 = sps.lti(ZEROS4, POLES4, GAIN)
         
         x, y, _ = recovery1.output(self.nodes[4][VALUE], self.nodes[4][TIME])
-        x, y, _ = recovery2.output(y,x)
-        x, y, _ = recovery3.output(y,x)
-        x, y, _ = recovery4.output(y,x)
+        x, y, _ = recovery2.output(y, x)
+        x, y, _ = recovery3.output(y, x)
+        x, y, _ = recovery4.output(y, x)
         
         self.nodes[4][TIME] = x
         self.nodes[4][VALUE] = y
@@ -310,7 +306,6 @@ class Backend():
     #   - cada nodo debe contener una cantidad entera de períodos de la señal a transformar
     #   - se establece un mínimo de 5 períodos de la señal, para que el gráfico final sea representativo del espectro
     def fourierTransform(self, node_num):
-        w = sps.windows.blackman(POINTS)
-        fy = np.fft.fft(self.nodes[node_num][VALUE] * w) / POINTS  # transformada de fourier
+        fy = np.fft.fft(self.nodes[node_num][VALUE]) / POINTS  # transformada de fourier
         fx = np.fft.fftfreq(self.nodes[node_num][TIME].size, (max(self.nodes[node_num][TIME]) - min(self.nodes[node_num][TIME])) / POINTS) # frecuencias
         return fx, fy
