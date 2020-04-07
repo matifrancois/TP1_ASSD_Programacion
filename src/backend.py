@@ -62,8 +62,8 @@ class Backend():
         super(Backend, self).__init__()        # Llamamos al constructor de los padres
         #self.setupUi(self)# Necesitamos usar esto para hacer el build de los componentes
         self.signalType = ""
-        self.amplitude = 0.0  # en el caso de AM, representa la de la moduladora
-        self.frequency = 1.0  # en el caso de AM, representa la de la moduladora
+        self.amplitude = 0.0                    # en el caso de AM, representa la de la moduladora
+        self.frequency = 1.0                    # en el caso de AM, representa la de la moduladora
         self.signalPeriod = 1 / self.frequency # en el caso de AM, representa la de la moduladora
         self.samplePeriod = 0.0
         self.tau = 0.0
